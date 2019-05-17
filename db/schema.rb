@@ -10,10 +10,53 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_17_140212) do
+ActiveRecord::Schema.define(version: 2019_05_17_183727) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "agents", force: :cascade do |t|
+    t.string "name"
+    t.string "type"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_agents_on_user_id"
+  end
+
+  create_table "offers", force: :cascade do |t|
+    t.integer "energy"
+    t.integer "price"
+    t.integer "period"
+    t.bigint "agent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["agent_id"], name: "index_offers_on_agent_id"
+  end
+
+  create_table "results", force: :cascade do |t|
+    t.integer "period"
+    t.integer "power"
+    t.integer "traded_power"
+    t.integer "price"
+    t.integer "market_price"
+    t.bigint "simulation_id"
+    t.bigint "agent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["agent_id"], name: "index_results_on_agent_id"
+    t.index ["simulation_id"], name: "index_results_on_simulation_id"
+  end
+
+  create_table "simulations", force: :cascade do |t|
+    t.datetime "date"
+    t.string "market_type"
+    t.string "pricing_mechanism"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_simulations_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -27,4 +70,9 @@ ActiveRecord::Schema.define(version: 2019_05_17_140212) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "agents", "users"
+  add_foreign_key "offers", "agents"
+  add_foreign_key "results", "agents"
+  add_foreign_key "results", "simulations"
+  add_foreign_key "simulations", "users"
 end
