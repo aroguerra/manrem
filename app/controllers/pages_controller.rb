@@ -5,6 +5,17 @@ class PagesController < ApplicationController
   end
 
   def dashboard
+    @my_simulations = Simulation.where(user_id: current_user.id)
+    @my_simulations_pool = Simulation.where(user_id: current_user.id, market_type: "pool market")
+    @my_simulations_pool_asym = Simulation.where(user_id: current_user.id, market_type: "pool market")
+
+
+
+    @my_agents = Agent.where(user_id: current_user.id)
+    @my_buyers = Agent.where(user_id: current_user.id, category: "Buyer")
+    @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
+
+
   end
 
  end
