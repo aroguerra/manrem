@@ -40,3 +40,31 @@ CSV.foreach('./db/offers.csv', CSV_OPTIONS) do |row|
     )
   offer.save
 end
+
+CSV.foreach('./db/simulations.csv', CSV_OPTIONS) do |row|
+  simulation = Simulation.new(
+    date: row[0],
+    market_type: row[1],
+    pricing_mechanism: row[2],
+    user_id: row[3]
+    )
+  simulation.save
+end
+
+CSV.foreach('./db/results.csv', CSV_OPTIONS) do |row|
+  result = Result.new(
+    period: row[0],
+    power: row[1],
+    traded_power: row[2],
+    price: row[3],
+    market_price: row[4],
+    simulation_id: row[5],
+    agent_id: row[6]
+    )
+  result.save
+end
+
+
+
+
+
