@@ -1,22 +1,16 @@
-.form-group{
-  margin-top: 25px;
-  margin-left: 25px;
-  margin-right: 25px;
+.form {
+  display: flex;
+  justify-content: center;
+  align-item: center;
+  margin-top: 30px;
+
+}
+.center{
+  text-align: center;
 }
 
-.form-check-label {
-  margin-left: 18px;
-}
-
-.login {
-  margin-left: 220px;
-}
-
-.forgot-pass {
-  margin-left: 25px;
-}
 .form-control {
-  color: blue;
+  color: #4B4962;
   border: 1px solid #999999;
   padding: 10px 15px;
   border-radius: 50px;
@@ -27,10 +21,27 @@
   background: white;
 }
 
-.form {
-  display: flex;
-  justify-content: center;
-  align-item: center;
+.btn-buy-green {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+  background: #21CD9A;;
+  border-radius: 40px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: normal;
+  font-size: 14px;
+  color: #F0F0F0;
+  padding: 14px 22px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  border: 1px solid #21CD9A;
+  opacity: 0.9;
+  &:hover, &:focus {
+    opacity: 1;
+    color: white;
+    text-decoration: none;
+  }
+  a {
+    color: white;
+  }
 }
-
-
