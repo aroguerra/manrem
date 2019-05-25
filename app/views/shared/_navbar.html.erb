@@ -29,9 +29,15 @@
           </div>
         </li>
       <% else %>
-        <li class="nav-item">
+      <div class="btn-landing">
+        <%= link_to t(".sign_up", default: "Create Account"), new_user_registration_path%>
+      </div>
+      <div class="btn-landing-white">
+        <%= link_to t(".sign_in", default: "Sign In"), new_user_session_path%>
+      </div>
+       <!--  <li class="nav-item">
           <%= link_to "Login", new_user_session_path, class: "nav-link" %>
-        </li>
+        </li> -->
       <% end %>
     </ul>
   </div>

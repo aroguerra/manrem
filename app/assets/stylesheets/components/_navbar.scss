@@ -11,3 +11,46 @@
 .navbar-lewagon .navbar-brand img {
   width: 130px;
 }
+
+.btn-landing-white {
+  background: white;
+  border-radius: 40px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: normal;
+  font-size: 14px;
+  color: #21CD9A;
+  padding: 14px 35px;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  border: 1px solid #21CD9A;
+  opacity: 0.9;
+  &:hover, &:focus {
+    opacity: 1;
+  }
+  a {
+    color: #21CD9A;
+  }
+}
+
+.btn-landing {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+  background: #21CD9A;
+  border-radius: 40px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: normal;
+  font-size: 14px;
+  color: #F0F0F0;
+  padding: 14px 35px;
+  margin-bottom: 0px;
+  margin-right: 16px;
+  border: 1px solid #21CD9A;
+  opacity: 0.9;
+  &:hover, &:focus {
+    opacity: 1;
+  }
+  a {
+    color: white;
+  }
+}
