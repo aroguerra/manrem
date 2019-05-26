@@ -1,34 +1,33 @@
-<p>abraham</p>
+<h1>Simulations</h1>
 
-
-<% @simulations.each_with_index do |item, index| %>
-<div class=row>
-  <div class="col-xs-12 col-sm-12 col-md-12">
-    <div class="card-product">
-      <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg">
-      <div class="card-product-infos">
-        <h2>Simulação <%=index + 1%></h2>
-        <div class="sim-info">
-          <p><strong>Data da Simulação</strong></p>
-          <p>data: <%= item.date.strftime("%B %d")  %></p>
+<% @simulations.each_with_index do |item, index|%>
+  <div class=row>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+      <div class="card-product">
+        <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg">
+        <div class="card-product-infos">
+          <h2>Simulação <%=index + 1%></h2>
+          <div class="sim-info">
+            <p><strong>Data da Simulação</strong></p>
+            <p>data: <%= item.date.strftime("%B %d")  %></p>
+          </div>
+          <div class="sim-info">
+            <p><strong>Tipo de Mercado</strong></p>
+            <p>Mercado: <%= item.market_type %></p>
+          </div>
+          <div class="sim-info">
+            <p><strong>Descrição</strong></p>
+            <p>Tipo de mercado: <%= item.pricing_mechanism %> </p>
+          </div>
+          <div class="sim-info">
+            <p><strong>Agentes</strong></p>
+            <p><%=  %></p>
+          </div>
         </div>
-        <div class="sim-info">
-          <p><strong>Tipo de Mercado</strong></p>
-          <p>Mercado: <%= item.market_type %></p>
+        <div class="btn-landing-white">
+          <%= link_to "See Results", results_show_path(item.id)%>
         </div>
-        <div class="sim-info">
-          <p><strong>Descrição</strong></p>
-          <p>Tipo de mercado: <%= item.pricing_mechanism %> </p>
-        </div>
-        <div class="sim-info">
-          <p><strong>Agentes</strong></p>
-          <p><%=  %></p>
-        </div>
-      </div>
-      <div class="btn-landing-white">
-        <%= link_to t(".sign_in", default: "See Results"), new_user_session_path%>
       </div>
     </div>
   </div>
-</div>
-<% end %>
+<% end%>
