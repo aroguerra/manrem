@@ -1,1 +1,31 @@
 <p>abrahaml</p>
+   <div">
+
+        <table>
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Agente</th>
+              <th scope="col">Period</th>
+              <th scope="col">Traded Power</th>
+              <th scope="col">Price</th>
+              <th scope="col">Market Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @results.each do |result| %>
+            <tr>
+              <th scope="row"></th>
+
+              <td><%= Agent.where(id: result.agent_id)[0].name %></td>
+              <td><%= result.period %></td>
+              <td><%= result.traded_power %></td>
+              <td><%= result.price %></td>
+              <td><%= result.market_price %></td>
+
+            </tr>
+             <% end %>
+          </tbody>
+        </table>
+
+      </div>
