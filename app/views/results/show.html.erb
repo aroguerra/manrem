@@ -1,6 +1,9 @@
 <h1>Results of simulation <%=@simulation.id%> </h1>
    <div class ="container">
-      <%=link_to 'Download as Excel', results_show_path(format: :xlsx) %>
+    <div class="btn-landing-white">
+      <%=link_to 'Download', results_show_path(format: :xlsx)  %>
+    </div>
+    <br>
         <table>
           <thead>
             <tr>

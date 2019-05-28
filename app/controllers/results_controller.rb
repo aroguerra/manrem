@@ -8,7 +8,7 @@ class ResultsController < ApplicationController
     format.xlsx {
       response.headers[
         'Content-Disposition'
-      ] = "attachment; filename='items.xlsx'"
+      ] = "attachment; filename=items.xlsx"
     }
     format.html { render :show }
   end
