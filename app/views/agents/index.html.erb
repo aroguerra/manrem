@@ -1,0 +1,22 @@
+<div class ="container">
+    <h1>My Agents</h1>
+    <br>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Name</th>
+              <th scope="col">Category</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @my_buyers.each do |buyer| %>
+            <tr>
+              <th scope="row"></th>
+              <td><%= buyer.name %></td>
+              <td><%= buyer.category %></td>
+            </tr>
+             <% end %>
+          </tbody>
+        </table>
+    </div>

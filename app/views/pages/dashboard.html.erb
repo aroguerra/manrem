@@ -1,28 +1,60 @@
-<h1>Dashboard <img src="https://img.icons8.com/ios/35/000000/menu-filled.png"></h1>
 <div class="container">
+  <div class="row">
+    <h1>Dashboard <img src="https://img.icons8.com/ios/35/000000/menu-filled.png"></h1>
+  </div>
+  <br>
+  <div class="row">
+    <h3>My Simulations</h3>
+  </div>
   <div class="row">
     <div class="col-xs-12 col-sm-6 col-md-4">
       <div class="info">
           <p>Pool Market - Sym</p>
-          <h1> <%= @my_simulations.count %> </h1>
-          <p> transactions performed </p>
-        </div>
+          <h1> <%=  @my_simulations_pool_sym.count %> </h1>
+          <p> Simulações</p>
+      </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-4">
       <div class="info">
           <p>Pool Market - ASym</p>
-          <h1> <%= @my_simulations.count %> </h1>
-          <p> transactions performed </p>
+          <h1> <%= @my_simulations_pool_asym.count %> </h1>
+          <p> Simulações </p>
         </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-4">
       <div class="info">
           <p>Balance Market</p>
-          <h1> <%= @my_simulations.count %> </h1>
-          <p> simulac</p>
+          <h1> <%=  @my_simulations_pool_sym.count %> </h1>
+          <p> Simulações</p>
         </div>
     </div>
   </div>
+  <div class="btn-landing col-xs-12 col-sm-12 col-md-2">
+      <%=link_to 'Simulate'  %>
+  </div>
+  <br>
+  <br>
+  <br>
+  <div class="row">
+    <h3>My Agents</h3>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+      <div class="info">
+          <p>Buyers</p>
+          <h1> <%=  @my_buyers.count %> </h1>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+      <div class="info">
+          <p>Sellers</p>
+          <h1> <%= @my_sellers.count %> </h1>
+      </div>
+    </div>
+    <div class="btn-landing col-xs-12 col-sm-12 col-md-2">
+      <%=link_to 'My Agents', agents_path%>
+  </div>
+</div>
 </div>
 
 
