@@ -25,14 +25,14 @@ class SimulationsController < ApplicationController
     @my_buyers.each do |buyer|
       bids << buyer.offers.where(period: 1)
     end
-    buyers_bids = bids.flatten.sort_by{ |bid| bid.price}
+    buyers_bids = bids.flatten.sort_by { |bid| bid.price }
 
     @my_sellers.each do |seller|
       offers << seller.offers.where(period: 1)
     end
-    sellers_offers = offers.flatten.sort_by{ |offer| offer.price }
+    sellers_offers = offers.flatten.sort_by { |offer| offer.price }
 
-    demand_power = buyers_bids.sum{ |a| a.energy }
+    demand_power = buyers_bids.sum { |a| a.energy }
     upper_limit = buyers_bids[0].price
     last_seller_tosold_price = sellers_offers[0].price
 
@@ -83,10 +83,44 @@ class SimulationsController < ApplicationController
     sellers_offers.each do |offer|
       offer_accepted += offer.energy if offer.price <= period_market_price
     end
-byebug
 
+    #### Set total power accepted#####
+    total_power_sold = 0
+    demand_accepted > offer_accepted ? total_power_sold = offer_accepted : total_power_sold = demand_accepted
 
+    #### inform buyers if bids were accepted or not
+    power = total_power_sold
+    buyers_bids.reverse!
 
+    buyers_bids.each do |bid|
+      if bid.price >= period_market_price
+        if power > bid.power
+          ####criar resultado com traded_power = bid.power####
+          power -= bid.power
+        else
+          #### criar resultado com traded_power = power
+          power = 0
+        end
+      else
+        #### criar resultado com traded_power = 0 (no buy_bolsa)
+      end
+    end
+
+    #### inform buyers if bids were accepted or not
+    power = total_power_sold
+    sellers_offers.each do |offer|
+      if offer.price <= period_market_price
+        if power > offer.power
+          ####criar resultado com traded_power = bid.power####
+          power -= offer.power
+        else
+          #### criar resultado com traded_power = power
+          power = 0
+        end
+      else
+        #### criar resultado com traded_power = 0 (no buy_bolsa)
+      end
+    end
 
 
 
