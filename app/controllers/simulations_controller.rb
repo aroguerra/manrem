@@ -1,5 +1,4 @@
 class SimulationsController < ApplicationController
-
   def index
     @simulations = Simulation.where(user_id: current_user.id).order('date DESC')
     @my_buyers = Agent.where(user_id: current_user.id, category: "Buyer")
@@ -92,17 +91,23 @@ class SimulationsController < ApplicationController
     power = total_power_sold
     buyers_bids.reverse!
 
+    buyers_traded_power = []
+    sellers_traded_power = []
+
     buyers_bids.each do |bid|
       if bid.price >= period_market_price
-        if power > bid.power
+        if power > bid.energy
           ####criar resultado com traded_power = bid.power####
-          power -= bid.power
+          buyers_traded_power << bid.energy
+          power -= bid.energy
         else
           #### criar resultado com traded_power = power
+          buyers_traded_power << power
           power = 0
         end
       else
         #### criar resultado com traded_power = 0 (no buy_bolsa)
+        buyers_traded_power << 0
       end
     end
 
@@ -110,24 +115,51 @@ class SimulationsController < ApplicationController
     power = total_power_sold
     sellers_offers.each do |offer|
       if offer.price <= period_market_price
-        if power > offer.power
+        if power > offer.energy
           ####criar resultado com traded_power = bid.power####
-          power -= offer.power
+          sellers_traded_power << offer.energy
+          power -= offer.energy
         else
           #### criar resultado com traded_power = power
+          sellers_traded_power << power
           power = 0
         end
       else
         #### criar resultado com traded_power = 0 (no buy_bolsa)
+        sellers_traded_power << 0
+      end
+    end
+  end
+
+  def asym
+    @my_buyers = Agent.where(user_id: current_user.id, category: "Buyer")
+    @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
+
+    bids = []
+    offers = []
+    period_market_price = 0
+    ########### get offers and bids by order of price in each period#########
+    @my_buyers.each do |buyer|
+      bids << buyer.offers.where(period: 1)
+    end
+    buyers_bids = bids.flatten
+
+    @my_sellers.each do |seller|
+      offers << seller.offers.where(period: 1)
+    end
+    sellers_offers = offers.flatten.sort_by { |offer| offer.price }
+
+    demand_power = buyers_bids.sum { |a| a.energy }
+
+    # ##############Set market price##############
+    accepted_power = 0
+
+    if demand_power > 0
+      sellers_offers.each do |offer|
+        accepted_power < demand_power ? accepted_power += offer.energy && period_market_price = offer.price : break
       end
     end
 
-
-
-
-
-
-
-     byebug
+    byebug
   end
 end
