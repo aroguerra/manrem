@@ -111,7 +111,7 @@ class SimulationsController < ApplicationController
       end
     end
 
-    #### inform buyers if bids were accepted or not
+    #### inform sellers if offers were accepted or not
     power = total_power_sold
     sellers_offers.each do |offer|
       if offer.price <= period_market_price
@@ -152,6 +152,7 @@ class SimulationsController < ApplicationController
     demand_power = buyers_bids.sum { |a| a.energy }
 
     # ##############Set market price##############
+
     accepted_power = 0
 
     if demand_power > 0
@@ -160,6 +161,64 @@ class SimulationsController < ApplicationController
       end
     end
 
-    byebug
+    #### Set offers accepted#####
+    demand_accepted = 0
+    demand_accepted = demand_power
+    demand_accepted = accepted_power if demand_power > accepted_power
+
+    offer_accepted = 0
+    sellers_offers.each do |offer|
+      offer_accepted += offer.energy if offer.price <= period_market_price
+    end
+
+    #### Set total power accepted#####
+    total_power_sold = 0
+    demand_accepted > offer_accepted ? total_power_sold = offer_accepted : total_power_sold = demand_accepted
+
+
+    #### inform buyers if bids were accepted or not
+    power = total_power_sold
+
+    buyers_traded_power = []
+    sellers_traded_power = []
+
+    buyers_bids.each do |bid|
+      if power > 0
+        if power > bid.energy
+          ####criar resultado com traded_power = bid.power####
+          buyers_traded_power << bid.energy
+          power -= bid.energy
+        else
+          #### criar resultado com traded_power = power
+          buyers_traded_power << power
+          power = 0
+        end
+      else
+        #### criar resultado com traded_power = 0 (no buy_bolsa)
+        buyers_traded_power << 0
+      end
+    end
+
+    #### inform sellers if offers were accepted or not
+    power = total_power_sold
+    sellers_offers.each do |offer|
+      if offer.price <= period_market_price
+        if power > offer.energy
+          ####criar resultado com traded_power = bid.power####
+          sellers_traded_power << offer.energy
+          power -= offer.energy
+        else
+          #### criar resultado com traded_power = power
+          sellers_traded_power << power
+          power = 0
+        end
+      else
+        #### criar resultado com traded_power = 0 (no buy_bolsa)
+        sellers_traded_power << 0
+      end
+    end
+
+
+
   end
 end
