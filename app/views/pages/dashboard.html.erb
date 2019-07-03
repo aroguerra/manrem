@@ -24,15 +24,18 @@
     <div class="col-xs-12 col-sm-6 col-md-4">
       <div class="info">
           <p>Balance Market</p>
-          <h1> <%=  @my_simulations_pool_sym.count %> </h1>
+          <h1> <%=  0 %> </h1>
           <p> Simulações</p>
         </div>
     </div>
   </div>
   <div class="btn-landing col-xs-12 col-sm-12 col-md-2">
-      <%=link_to 'Simulate'  %>
+      <%=link_to 'Simulate Sym', sym_path  %>
   </div>
   <br>
+  <div class="btn-landing col-xs-12 col-sm-12 col-md-2">
+      <%=link_to 'Simulate ASym', asym_path  %>
+  </div>
   <br>
   <br>
   <div class="row">

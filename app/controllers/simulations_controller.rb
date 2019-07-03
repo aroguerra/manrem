@@ -9,11 +9,12 @@ class SimulationsController < ApplicationController
     @my_buyers = Agent.where(user_id: current_user.id, category: "Buyer")
     @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
 
-    # simulation_sym = Simulation.new(
-    #   date: DateTime.now,
-    #   market_type: "pool market",
-    #   pricing_mechanism: "symetrical",
-    #   user_id: current_user.id)
+    simulation_sym = Simulation.new(
+      date: DateTime.now,
+      market_type: "pool market",
+      pricing_mechanism: "symetrical",
+      user_id: current_user.id)
+    simulation_sym.save
 
     (1..24).each do |per|
       bids = []
@@ -101,38 +102,109 @@ class SimulationsController < ApplicationController
       buyers_traded_power = []
       sellers_traded_power = []
 
+     ##############################################################
+     ################    BUYERS RESULTS        ####################
+
       buyers_bids.each do |bid|
         if bid.price >= period_market_price
           if power > bid.energy
             ####criar resultado com traded_power = bid.power####
+
+            result = Result.new(
+              period: per,
+              power: bid.energy,
+              traded_power: bid.energy,
+              price: bid.price,
+              market_price: period_market_price,
+              simulation_id: Simulation.last.id,
+              agent_id: current_user.id
+            )
+
             buyers_traded_power << bid.energy
             power -= bid.energy
           else
             #### criar resultado com traded_power = power
+
+            result = Result.new(
+              period: per,
+              power: bid.energy,
+              traded_power: power,
+              price: bid.price,
+              market_price: period_market_price,
+              simulation_id: Simulation.last.id,
+              agent_id: current_user.id
+            )
+
             buyers_traded_power << power
             power = 0
           end
         else
           #### criar resultado com traded_power = 0 (no buy_bolsa)
+
+          result = Result.new(
+            period: per,
+            power: bid.energy,
+            traded_power: 0,
+            price: bid.price,
+            market_price: period_market_price,
+            simulation_id: Simulation.last.id,
+            agent_id: current_user.id
+          )
+
           buyers_traded_power << 0
         end
       end
 
+      ################################################################
+      ####################  SELLERS RESULTS   ########################
       #### inform sellers if offers were accepted or not
       power = total_power_sold
       sellers_offers.each do |offer|
         if offer.price <= period_market_price
           if power > offer.energy
             ####criar resultado com traded_power = bid.power####
+            result = Result.new(
+              period: per,
+              power: offer.energy,
+              traded_power: offer.energy,
+              price: offer.price,
+              market_price: period_market_price,
+              simulation_id: Simulation.last.id,
+              agent_id: current_user.id
+            )
+
             sellers_traded_power << offer.energy
             power -= offer.energy
           else
             #### criar resultado com traded_power = power
+
+            result = Result.new(
+              period: per,
+              power: offer.energy,
+              traded_power: power,
+              price: offer.price,
+              market_price: period_market_price,
+              simulation_id: Simulation.last.id,
+              agent_id: current_user.id
+            )
+
+
             sellers_traded_power << power
             power = 0
           end
         else
           #### criar resultado com traded_power = 0 (no buy_bolsa)
+
+          result = Result.new(
+            period: per,
+            power: offer.energy,
+            traded_power: 0,
+            price: offer.price,
+            market_price: period_market_price,
+            simulation_id: Simulation.last.id,
+            agent_id: current_user.id
+          )
+
           sellers_traded_power << 0
         end
       end
@@ -144,11 +216,13 @@ class SimulationsController < ApplicationController
     @my_buyers = Agent.where(user_id: current_user.id, category: "Buyer")
     @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
 
-    # simulation_asym = Simulation.new(
-    #   date: DateTime.now,
-    #   market_type: "pool market",
-    #   pricing_mechanism: "assymetrical",
-    #   user_id: current_user.id)
+    simulation_asym = Simulation.new(
+      date: DateTime.now,
+      market_type: "pool market",
+      pricing_mechanism: "assymetrical",
+      user_id: current_user.id
+    )
+    simulation_asym.save
 
     (1..24).each do |per|
       bids = []
@@ -157,7 +231,7 @@ class SimulationsController < ApplicationController
       ########### get offers and bids by order of price in each period#########
       @my_buyers.each do |buyer|
         bids << buyer.offers.where(period: per)
-      ends
+      end
       buyers_bids = bids.flatten
 
       @my_sellers.each do |seller|
@@ -202,15 +276,47 @@ class SimulationsController < ApplicationController
         if power > 0
           if power > bid.energy
             ####criar resultado com traded_power = bid.power####
+            result = Result.new(
+              period: per,
+              power: bid.energy,
+              traded_power: bid.energy,
+              price: bid.price,
+              market_price: period_market_price,
+              simulation_id: Simulation.last.id,
+              agent_id: current_user.id
+            )
+
             buyers_traded_power << bid.energy
             power -= bid.energy
           else
             #### criar resultado com traded_power = power
+             result = Result.new(
+              period: per,
+              power: bid.energy,
+              traded_power: power,
+              price: bid.price,
+              market_price: period_market_price,
+              simulation_id: Simulation.last.id,
+              agent_id: current_user.id
+            )
+
+
             buyers_traded_power << power
             power = 0
           end
         else
           #### criar resultado com traded_power = 0 (no buy_bolsa)
+
+          result = Result.new(
+            period: per,
+            power: bid.energy,
+            traded_power: 0,
+            price: bid.price,
+            market_price: period_market_price,
+            simulation_id: Simulation.last.id,
+            agent_id: current_user.id
+          )
+
           buyers_traded_power << 0
         end
       end
@@ -221,15 +327,48 @@ class SimulationsController < ApplicationController
         if offer.price <= period_market_price
           if power > offer.energy
             ####criar resultado com traded_power = bid.power####
+
+            result = Result.new(
+              period: per,
+              power: offer.energy,
+              traded_power: offer.energy,
+              price: offer.price,
+              market_price: period_market_price,
+              simulation_id: Simulation.last.id,
+              agent_id: current_user.id
+            )
+
             sellers_traded_power << offer.energy
             power -= offer.energy
           else
             #### criar resultado com traded_power = power
+
+             result = Result.new(
+              period: per,
+              power: offer.energy,
+              traded_power: power,
+              price: offer.price,
+              market_price: period_market_price,
+              simulation_id: Simulation.last.id,
+              agent_id: current_user.id
+            )
+
             sellers_traded_power << power
             power = 0
           end
         else
           #### criar resultado com traded_power = 0 (no buy_bolsa)
+
+          result = Result.new(
+            period: per,
+            power: offer.energy,
+            traded_power: 0,
+            price: offer.price,
+            market_price: period_market_price,
+            simulation_id: Simulation.last.id,
+            agent_id: current_user.id
+          )
+
           sellers_traded_power << 0
         end
       end
@@ -237,3 +376,4 @@ class SimulationsController < ApplicationController
     redirect_to simulation_path
   end
 end
+
