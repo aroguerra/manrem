@@ -16,7 +16,6 @@ class SimulationsController < ApplicationController
     #   user_id: current_user.id)
 
     (1..24).each do |per|
-      byebug
       bids = []
       offers = []
       offer_power = 0
