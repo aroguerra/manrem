@@ -16,7 +16,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @results.each do |result| %>
+            <% @results.where(simulation_id: @simulation.id).each do |result| %>
             <tr>
               <th scope="row"></th>
 

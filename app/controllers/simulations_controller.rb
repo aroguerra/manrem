@@ -13,7 +13,8 @@ class SimulationsController < ApplicationController
       date: DateTime.now,
       market_type: "pool market",
       pricing_mechanism: "symetrical",
-      user_id: current_user.id)
+      user_id: current_user.id
+    )
     simulation_sym.save
 
     (1..24).each do |per|
@@ -119,6 +120,7 @@ class SimulationsController < ApplicationController
               simulation_id: Simulation.last.id,
               agent_id: current_user.id
             )
+
 
             buyers_traded_power << bid.energy
             power -= bid.energy
@@ -286,6 +288,7 @@ class SimulationsController < ApplicationController
               agent_id: current_user.id
             )
 
+
             buyers_traded_power << bid.energy
             power -= bid.energy
           else
@@ -299,6 +302,7 @@ class SimulationsController < ApplicationController
               simulation_id: Simulation.last.id,
               agent_id: current_user.id
             )
+
 
 
             buyers_traded_power << power
@@ -316,6 +320,7 @@ class SimulationsController < ApplicationController
             simulation_id: Simulation.last.id,
             agent_id: current_user.id
           )
+
 
           buyers_traded_power << 0
         end
@@ -343,7 +348,7 @@ class SimulationsController < ApplicationController
           else
             #### criar resultado com traded_power = power
 
-             result = Result.new(
+            result = Result.new(
               period: per,
               power: offer.energy,
               traded_power: power,
@@ -352,6 +357,8 @@ class SimulationsController < ApplicationController
               simulation_id: Simulation.last.id,
               agent_id: current_user.id
             )
+
+
 
             sellers_traded_power << power
             power = 0
