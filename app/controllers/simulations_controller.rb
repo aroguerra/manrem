@@ -118,8 +118,10 @@ class SimulationsController < ApplicationController
               price: bid.price,
               market_price: period_market_price,
               simulation_id: Simulation.last.id,
-              agent_id: current_user.id
+              agent_id: bid.agent_id
             )
+            result.save
+
 
 
             buyers_traded_power << bid.energy
@@ -134,8 +136,9 @@ class SimulationsController < ApplicationController
               price: bid.price,
               market_price: period_market_price,
               simulation_id: Simulation.last.id,
-              agent_id: current_user.id
+              agent_id: bid.agent_id
             )
+            result.save
 
             buyers_traded_power << power
             power = 0
@@ -150,8 +153,9 @@ class SimulationsController < ApplicationController
             price: bid.price,
             market_price: period_market_price,
             simulation_id: Simulation.last.id,
-            agent_id: current_user.id
+            agent_id: bid.agent_id
           )
+          result.save
 
           buyers_traded_power << 0
         end
@@ -172,8 +176,9 @@ class SimulationsController < ApplicationController
               price: offer.price,
               market_price: period_market_price,
               simulation_id: Simulation.last.id,
-              agent_id: current_user.id
+              agent_id: offer.agent_id
             )
+            result.save
 
             sellers_traded_power << offer.energy
             power -= offer.energy
@@ -187,8 +192,9 @@ class SimulationsController < ApplicationController
               price: offer.price,
               market_price: period_market_price,
               simulation_id: Simulation.last.id,
-              agent_id: current_user.id
+              agent_id: offer.agent_id
             )
+            result.save
 
 
             sellers_traded_power << power
@@ -204,8 +210,9 @@ class SimulationsController < ApplicationController
             price: offer.price,
             market_price: period_market_price,
             simulation_id: Simulation.last.id,
-            agent_id: current_user.id
+            agent_id: offer.agent_id
           )
+          result.save
 
           sellers_traded_power << 0
         end
@@ -285,23 +292,25 @@ class SimulationsController < ApplicationController
               price: bid.price,
               market_price: period_market_price,
               simulation_id: Simulation.last.id,
-              agent_id: current_user.id
+              agent_id: bid.agent_id
             )
+            result.save
 
 
             buyers_traded_power << bid.energy
             power -= bid.energy
           else
             #### criar resultado com traded_power = power
-             result = Result.new(
+            result = Result.new(
               period: per,
               power: bid.energy,
               traded_power: power,
               price: bid.price,
               market_price: period_market_price,
               simulation_id: Simulation.last.id,
-              agent_id: current_user.id
+              agent_id: bid.agent_id
             )
+            result.save
 
 
 
@@ -318,8 +327,9 @@ class SimulationsController < ApplicationController
             price: bid.price,
             market_price: period_market_price,
             simulation_id: Simulation.last.id,
-            agent_id: current_user.id
+            agent_id: bid.agent_id
           )
+          result.save
 
 
           buyers_traded_power << 0
@@ -340,8 +350,9 @@ class SimulationsController < ApplicationController
               price: offer.price,
               market_price: period_market_price,
               simulation_id: Simulation.last.id,
-              agent_id: current_user.id
+              agent_id: offer.agent_id
             )
+            result.save
 
             sellers_traded_power << offer.energy
             power -= offer.energy
@@ -355,8 +366,9 @@ class SimulationsController < ApplicationController
               price: offer.price,
               market_price: period_market_price,
               simulation_id: Simulation.last.id,
-              agent_id: current_user.id
+              agent_id: offer.agent_id
             )
+            result.save
 
 
 
@@ -373,8 +385,9 @@ class SimulationsController < ApplicationController
             price: offer.price,
             market_price: period_market_price,
             simulation_id: Simulation.last.id,
-            agent_id: current_user.id
+            agent_id: offer.agent_id
           )
+          result.save
 
           sellers_traded_power << 0
         end
