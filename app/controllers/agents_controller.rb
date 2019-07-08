@@ -6,4 +6,9 @@ class AgentsController < ApplicationController
     @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
   end
 
+  def import
+    xlsx = Roo::Spreadsheet.open(params[:file])
+    byebug
+  end
+
 end
