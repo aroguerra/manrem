@@ -7,7 +7,7 @@ class CreateResults < ActiveRecord::Migration[5.2]
       t.integer :price
       t.integer :market_price
       t.references :simulation, foreign_key: true
-      t.references :agent, foreign_key: true
+      #t.references :agent, foreign_key: true
 
       t.timestamps
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_04_192128) do
+ActiveRecord::Schema.define(version: 2019_07_09_112243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,8 +25,8 @@ ActiveRecord::Schema.define(version: 2019_07_04_192128) do
   end
 
   create_table "offers", force: :cascade do |t|
-    t.integer "energy"
-    t.integer "price"
+    t.float "energy"
+    t.float "price"
     t.integer "period"
     t.bigint "agent_id"
     t.datetime "created_at", null: false
@@ -37,14 +37,12 @@ ActiveRecord::Schema.define(version: 2019_07_04_192128) do
   create_table "results", force: :cascade do |t|
     t.integer "period"
     t.float "power"
-    t.integer "traded_power"
-    t.integer "price"
-    t.integer "market_price"
+    t.float "traded_power"
+    t.float "price"
+    t.float "market_price"
     t.bigint "simulation_id"
-    t.bigint "agent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["agent_id"], name: "index_results_on_agent_id"
     t.index ["simulation_id"], name: "index_results_on_simulation_id"
   end
 
@@ -73,7 +71,6 @@ ActiveRecord::Schema.define(version: 2019_07_04_192128) do
 
   add_foreign_key "agents", "users"
   add_foreign_key "offers", "agents"
-  add_foreign_key "results", "agents"
   add_foreign_key "results", "simulations"
   add_foreign_key "simulations", "users"
 end

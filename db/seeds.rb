@@ -59,7 +59,7 @@ CSV.foreach('./db/results.csv', CSV_OPTIONS) do |row|
     price: row[3],
     market_price: row[4],
     simulation_id: row[5],
-    agent_id: row[6]
+    #agent_id: row[6]
     )
   result.save
 end
