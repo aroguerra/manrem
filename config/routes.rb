@@ -7,8 +7,9 @@ Rails.application.routes.draw do
   get  "sym", to: "simulations#sym"
   get  "asym", to: "simulations#asym"
   get "simulation/:simulation_id/results", to: "results#show", as: 'results_show'
-  get  "agents", to: "agents#index"
 
+  get "participants", to: "agents#participants"
+  get  "agents", to: "agents#index"
   post "import", to: "agents#import"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

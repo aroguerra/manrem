@@ -1,0 +1,5 @@
+<p>abraham guerra</p>
+<%= simple_form_for @my_buyers do |f| %>
+<%= f.error_notification %>
+<%= f.input :choises, as: :check_boxes, collection: @my_buyers.count %>
+<% end %>
