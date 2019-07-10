@@ -4,7 +4,7 @@ wb.add_worksheet(name: "Items") do |sheet|
   # Create the header row
   sheet.add_row ["agente", "Period", "Traded Power", "Price", "Market Price"]
   # Create entries for each item
-  @results.each do |item|
-    sheet.add_row [Agent.where(id: item.agent_id)[0].name, item.period, item.price, item.traded_power, item.market_price]
+  @results.where(simulation_id: @simulation.id).each do |item|
+    sheet.add_row [item.agent_name, item.period, item.price, item.traded_power, item.market_price]
   end
 end

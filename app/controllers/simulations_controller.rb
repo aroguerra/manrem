@@ -118,7 +118,7 @@ class SimulationsController < ApplicationController
               price: bid.price,
               market_price: period_market_price,
               simulation_id: Simulation.last.id,
-              agent_id: bid.agent_id
+              agent_name: Agent.where(id: bid.agent_id)[0].name
             )
             result.save
 
@@ -136,7 +136,7 @@ class SimulationsController < ApplicationController
               price: bid.price,
               market_price: period_market_price,
               simulation_id: Simulation.last.id,
-              agent_id: bid.agent_id
+              agent_name: Agent.where(id: bid.agent_id)[0].name
             )
             result.save
 
@@ -153,7 +153,7 @@ class SimulationsController < ApplicationController
             price: bid.price,
             market_price: period_market_price,
             simulation_id: Simulation.last.id,
-            agent_id: bid.agent_id
+            agent_name: Agent.where(id: bid.agent_id)[0].name
           )
           result.save
 
@@ -176,7 +176,7 @@ class SimulationsController < ApplicationController
               price: offer.price,
               market_price: period_market_price,
               simulation_id: Simulation.last.id,
-              agent_id: offer.agent_id
+              agent_name: Agent.where(id: offer.agent_id)[0].name
             )
             result.save
 
@@ -192,7 +192,7 @@ class SimulationsController < ApplicationController
               price: offer.price,
               market_price: period_market_price,
               simulation_id: Simulation.last.id,
-              agent_id: offer.agent_id
+              agent_name: Agent.where(id: offer.agent_id)[0].name
             )
             result.save
 
@@ -210,7 +210,7 @@ class SimulationsController < ApplicationController
             price: offer.price,
             market_price: period_market_price,
             simulation_id: Simulation.last.id,
-            agent_id: offer.agent_id
+            agent_name: Agent.where(id: offer.agent_id)[0].name
           )
           result.save
 
@@ -292,7 +292,7 @@ class SimulationsController < ApplicationController
               price: bid.price,
               market_price: period_market_price,
               simulation_id: Simulation.last.id,
-              agent_id: bid.agent_id
+              agent_name: Agent.where(id: bid.agent_id)[0].name
             )
             result.save
 
@@ -308,7 +308,7 @@ class SimulationsController < ApplicationController
               price: bid.price,
               market_price: period_market_price,
               simulation_id: Simulation.last.id,
-              agent_id: bid.agent_id
+              agent_name: Agent.where(id: bid.agent_id)[0].name
             )
             result.save
 
@@ -327,7 +327,7 @@ class SimulationsController < ApplicationController
             price: bid.price,
             market_price: period_market_price,
             simulation_id: Simulation.last.id,
-            agent_id: bid.agent_id
+            agent_name: Agent.where(id: bid.agent_id)[0].name
           )
           result.save
 
@@ -350,7 +350,7 @@ class SimulationsController < ApplicationController
               price: offer.price,
               market_price: period_market_price,
               simulation_id: Simulation.last.id,
-              agent_id: offer.agent_id
+              agent_name: Agent.where(id: offer.agent_id)[0].name
             )
             result.save
 
@@ -366,7 +366,7 @@ class SimulationsController < ApplicationController
               price: offer.price,
               market_price: period_market_price,
               simulation_id: Simulation.last.id,
-              agent_id: offer.agent_id
+              agent_name: Agent.where(id: offer.agent_id)[0].name
             )
             result.save
 
@@ -385,7 +385,7 @@ class SimulationsController < ApplicationController
             price: offer.price,
             market_price: period_market_price,
             simulation_id: Simulation.last.id,
-            agent_id: offer.agent_id
+            agent_name: Agent.where(id: offer.agent_id)[0].name
           )
           result.save
 
