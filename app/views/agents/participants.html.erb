@@ -1,5 +1,31 @@
-<p>abraham guerra</p>
-<%= simple_form_for @my_buyers do |f| %>
-<%= f.error_notification %>
-<%= f.input :choises, as: :check_boxes, collection: @my_buyers.count %>
+<h1>Participants</h1>
+
+<div class ="container">
+  <div class ="row">
+<!-- Default indeterminate -->
+<% @my_buyers.each do |buyer| %>
+<div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" id="defaultIndeterminate2" checked>
+  <label class="custom-control-label" for="defaultIndeterminate2"> <%=buyer.name %></label>
+</div>
 <% end %>
+</div>
+<br>
+<div class ="row">
+<% @my_sellers.each do |seller| %>
+<div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" id="defaultIndeterminate2" checked>
+  <label class="custom-control-label" for="defaultIndeterminate2"> <%= seller.name %></label>
+</div>
+<% end %>
+</div>
+<br>
+<br>
+<div class="btn-landing col-xs-12 col-sm-12 col-md-2">
+      <%=link_to 'Simulate Sym', sym_path  %>
+  </div>
+  <br>
+  <div class="btn-landing col-xs-12 col-sm-12 col-md-2">
+      <%=link_to 'Simulate ASym', asym_path  %>
+  </div>
+</div>

@@ -6,6 +6,7 @@ class AgentsController < ApplicationController
 
   def participants
     @my_buyers = Agent.where(user_id: current_user.id, category: "Buyer")
+    @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
   end
 
   def import
