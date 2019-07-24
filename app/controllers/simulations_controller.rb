@@ -397,6 +397,14 @@ class SimulationsController < ApplicationController
   end
 
   def bmsecondary
+    previsions = BmSecondaryNeeds.where(user_id: current_user.id)
+
+    system_needs_up = previsions.map { |x| (Math.sqrt(x.prevision * 10 + (150 * 150)) - 150).round }
+    system_needs_down = system_needs_up.map { |x| (x * (-0.5)).round }
+
+
+
+
 
 
 
@@ -405,10 +413,5 @@ class SimulationsController < ApplicationController
 
 
   end
-
-
-
-
-
 end
 
