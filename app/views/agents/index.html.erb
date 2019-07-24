@@ -5,6 +5,16 @@
     <%= file_field_tag :file   %>
     <%= submit_tag "Import"   %>
     <% end %>
+    <br>
+    <%= form_tag importbm_path, multipart: true do   %>
+    <%= file_field_tag :file   %>
+    <%= submit_tag "Importbm"   %>
+    <% end %>
+    <br>
+    <%= form_tag importsecneed_path, multipart: true do   %>
+    <%= file_field_tag :file   %>
+    <%= submit_tag "Imporsecneed"   %>
+    <% end %>
         <table>
           <thead>
             <tr>

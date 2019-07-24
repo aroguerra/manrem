@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_10_105624) do
+ActiveRecord::Schema.define(version: 2019_07_24_104045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,62 @@ ActiveRecord::Schema.define(version: 2019_07_10_105624) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_agents_on_user_id"
+  end
+
+  create_table "bm_agents", force: :cascade do |t|
+    t.string "name"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_bm_agents_on_user_id"
+  end
+
+  create_table "bm_secondary_needs", force: :cascade do |t|
+    t.float "prevision"
+    t.integer "period"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_bm_secondary_needs_on_user_id"
+  end
+
+  create_table "bm_secondary_results", force: :cascade do |t|
+    t.string "bm_agent_name"
+    t.string "bm_unit_name"
+    t.integer "period"
+    t.float "power"
+    t.float "down_traded"
+    t.float "power_down"
+    t.float "up_traded"
+    t.float "power_up"
+    t.float "price"
+    t.float "market_price"
+    t.float "system_down_needs"
+    t.float "system_up_needs"
+    t.bigint "simulation_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["simulation_id"], name: "index_bm_secondary_results_on_simulation_id"
+  end
+
+  create_table "bm_unit_offers", force: :cascade do |t|
+    t.float "price"
+    t.float "energy"
+    t.integer "period"
+    t.bigint "bm_unit_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bm_unit_id"], name: "index_bm_unit_offers_on_bm_unit_id"
+  end
+
+  create_table "bm_units", force: :cascade do |t|
+    t.string "fuel"
+    t.string "category"
+    t.bigint "bm_agent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.index ["bm_agent_id"], name: "index_bm_units_on_bm_agent_id"
   end
 
   create_table "offers", force: :cascade do |t|
@@ -71,6 +127,11 @@ ActiveRecord::Schema.define(version: 2019_07_10_105624) do
   end
 
   add_foreign_key "agents", "users"
+  add_foreign_key "bm_agents", "users"
+  add_foreign_key "bm_secondary_needs", "users"
+  add_foreign_key "bm_secondary_results", "simulations"
+  add_foreign_key "bm_unit_offers", "bm_units"
+  add_foreign_key "bm_units", "bm_agents"
   add_foreign_key "offers", "agents"
   add_foreign_key "results", "simulations"
   add_foreign_key "simulations", "users"

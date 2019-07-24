@@ -10,6 +10,9 @@ Rails.application.routes.draw do
 
   get "participants", to: "agents#participants"
   get  "agents", to: "agents#index"
+
   post "import", to: "agents#import"
+  post "importbm", to: "agents#importbm"
+  post "importsecneed", to: "agents#importsecneed"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

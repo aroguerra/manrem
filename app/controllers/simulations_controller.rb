@@ -395,5 +395,20 @@ class SimulationsController < ApplicationController
     end
     redirect_to simulation_path
   end
+
+  def bmsecondary
+
+
+
+
+
+
+
+  end
+
+
+
+
+
 end
 
