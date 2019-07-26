@@ -397,21 +397,73 @@ class SimulationsController < ApplicationController
   end
 
   def bmsecondary
-    previsions = BmSecondaryNeeds.where(user_id: current_user.id)
+    previsions = BmSecondaryNeed.where(user_id: current_user.id)
+    bm_units = BmUnit.all #where participant equals true
+
+    sorted_offers = BmUnitOffer.joins(:bm_unit)
+                               .select('bm_units.id,
+                                        bm_unit_offers.id,
+                                        bm_unit_offers.energy,
+                                        bm_unit_offers.period,
+                                        bm_unit_offers.price')
+                               .order('bm_unit_offers.price ASC')
+
+    sorted_offers_aux = sorted_offers
 
     system_needs_up = previsions.map { |x| (Math.sqrt(x.prevision * 10 + (150 * 150)) - 150).round }
     system_needs_down = system_needs_up.map { |x| (x * (-0.5)).round }
 
+    energy_down = 0
+    energy_up = 0
+    down_exceed = 0
+    up_exceed = 0
+    ag = 0
+    aux = sorted_offers.first.price
 
+    if system_needs_up[per] != 0 && system_needs_down[per] != 0
+      (0..bm_units.count).each do |val1|
+        bm_units.each_with_index do |unit, index|
+          if sorted_offers[index].price <= aux && (energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per])
+            aux = sorted_offers[index].price
+            ag = index
+          elsif energy_down <= 0.9 * system_needs_down[per] && energy_up >= 0.9 * system_needs_up[per]
+            break #throw catch
+          end
+        end
+        aux = 180
+        # if energy_up + sorted_offers[ag].energy < 0.9 * system_needs_up[per] || energy_down + (sorted_offers[ag].energy * (-0.5)) > 0.9 *  system_needs_down[per])
+        #   energy_up += sorted_offers[ag].energy
+        #   energy_down += energy_up * (-0.5)
+          # if (energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per]) {
 
+        #     if (energy_down > 0.9 * system_needs_down[per] || energy1 < 0.9 * hourly_need[1]) {
 
+        #         if ((0.9 * system_needs_down[per] - energy_down) > 0 || (0.9 * hourly_need[1] - energy1) < 0) {
+        #             if ((0.9 * system_needs_down[per] - energy_down) > 0) {
+        #                 if (Dexceed == 0) {
+        #                     Testaux[ag][1] = String.valueOf(Double.valueOf(Test[ag][1]) - (system_needs_down[per] - energy_down));
+        #                 } else {
+        #                     Testaux[ag][1] = "0.0";
+        #                 }
+        #             }
+        #             if ((0.9 * hourly_need[1] - energy1) < 0) {
+        #                 if (Uexceed == 0) {
+        #                     Testaux[ag][2] = String.valueOf(Double.valueOf(Test[ag][2]) - (hourly_need[1] - energy1));
+        #                 } else {
+        #                     Testaux[ag][2] = "0.0";
+        #                 }
+        #                 Uexceed++;
+        #             }
+        #             HourResults.add(Testaux[ag]);
+        #         } else {
+        #             HourResults.add(reserve[ag]);
+        #         }
+        #         Test[ag][3] = "1000";
+        #     }
+        # }
+      #       }
 
-
-
-
-
-
-
+      end
+    end
   end
 end
-

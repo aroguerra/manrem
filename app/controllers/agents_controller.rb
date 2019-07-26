@@ -120,20 +120,19 @@ class AgentsController < ApplicationController
   end
 
   def importsecneed
+    xlsx = Roo::Spreadsheet.open(params[:file])
+    BmSecondaryNeed.destroy_all
 
-      xlsx = Roo::Spreadsheet.open(params[:file])
-      BmSecondaryNeed.destroy_all
+    previsions = xlsx.column(2).drop(1)
 
-      previsions = xlsx.column(2).drop(1)
-
-      (1..24).each do |val|
-        secondary_needs = BmSecondaryNeed.new(
-          prevision: previsions[val - 1],
-          period: val,
-          user_id: current_user.id
-        )
-        secondary_needs.save
-      end
+    (1..24).each do |val|
+      secondary_needs = BmSecondaryNeed.new(
+        prevision: previsions[val - 1],
+        period: val,
+        user_id: current_user.id
+      )
+      secondary_needs.save
+    end
   end
 end
 
