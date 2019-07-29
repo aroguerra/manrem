@@ -404,11 +404,13 @@ class SimulationsController < ApplicationController
                                .select('bm_units.id,
                                         bm_unit_offers.id,
                                         bm_unit_offers.energy,
+                                        bm_unit_offers.energy_down,
                                         bm_unit_offers.period,
                                         bm_unit_offers.price')
                                .order('bm_unit_offers.price ASC')
 
     sorted_offers_aux = sorted_offers
+    reserve = sorted_offers
 
     system_needs_up = previsions.map { |x| (Math.sqrt(x.prevision * 10 + (150 * 150)) - 150).round }
     system_needs_down = system_needs_up.map { |x| (x * (-0.5)).round }
@@ -420,58 +422,69 @@ class SimulationsController < ApplicationController
     ag = 0
     aux = sorted_offers.first.price
 
-    if system_needs_up[per] != 0 && system_needs_down[per] != 0
-      (0..bm_units.count).each do |val1|
-        bm_units.each_with_index do |unit, index|
-          if sorted_offers[index].price <= aux && (energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per])
-            aux = sorted_offers[index].price
-            ag = index
-          elsif energy_down <= 0.9 * system_needs_down[per] && energy_up >= 0.9 * system_needs_up[per]
-            break #throw catch
-          end
-        end
-        aux = 180
 
-        if energy_up + sorted_offers[ag].energy < 0.9 * system_needs_up[per] || energy_down + (sorted_offers[ag].energy * (-0.5)) > 0.9 * system_needs_down[per]
-          energy_up += sorted_offers[ag].energy
-          energy_down += energy_up * (-0.5)
-
-          if energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per]
-            if (0.9 * system_needs_down[per] - energy_down) > 0 || (0.9 * system_needs_up[per] - energy_up) < 0
-              if (0.9 * system_needs_down[per] - energy_down) > 0
-                if down_exceed == 0
-                  Testaux[ag][1] = String.valueOf(Double.valueOf(Test[ag][1]) - (system_needs_down[per] - energy_down))
-                else
-                  Testaux[ag][1] = "0.0"
-                end
+    (0..23).each do |per|
+      hour_results = []
+      if system_needs_up[per] != 0 && system_needs_down[per] != 0
+        catch :done do
+          (0..bm_units.count).each do |val1|
+            byebug
+            bm_units.each_with_index do |unit, i|
+              byebug
+              if sorted_offers.where(period: per + 1)[i].price <= aux && (energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per])
+                aux = sorted_offers.where(period: per + 1)[i].price
+                ag = i
+                byebug
+              elsif energy_down <= 0.9 * system_needs_down[per] && energy_up >= 0.9 * system_needs_up[per]
+                throw :done
+                byebug
               end
-              if (0.9 * system_needs_up[per] - energy_up) < 0
-                if up_exceed == 0
-                  Testaux[ag][2] = String.valueOf(Double.valueOf(Test[ag][2]) - (system_needs_up[per] - energy_up))
-                else
-                  Testaux[ag][2] = "0.0"
-                end
-              #up_exceed ++
-              end
-              HourResults.add(Testaux[ag])
-            else
-              HourResults.add(reserve[ag])
             end
-          Test[ag][3] = "1000"
+            aux = 180
+
+            if energy_up + sorted_offers.where(period: per + 1)[ag].energy < 0.9 * system_needs_up[per] || energy_down + (sorted_offers[ag].energy * (-0.5)) > 0.9 * system_needs_down[per]
+              energy_up += sorted_offers.where(period: per + 1)[ag].energy
+              energy_down += energy_up * (-0.5)
+               byebug
+
+              if energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per]
+                if (0.9 * system_needs_down[per] - energy_down) > 0 || (0.9 * system_needs_up[per] - energy_up) < 0
+                  if (0.9 * system_needs_down[per] - energy_down) > 0
+                    if down_exceed == 0
+                      sorted_offers_aux.where(period: per + 1)[ag].energy_down = sorted_offers_aux.where(period: per + 1)[ag].energy_down - (system_needs_down[per] - energy_down)
+                    else
+                      sorted_offers_aux[ag].energy_down = 0
+                    end
+                  end
+                  if (0.9 * system_needs_up[per] - energy_up) < 0
+                    if up_exceed == 0
+                      sorted_offers_aux.where(period: per + 1)[ag].energy = sorted_offers_aux.where(period: per + 1)[ag].energy - (system_needs_up[per] - energy_up)
+                    else
+                      sorted_offers_aux[ag].energy = 0
+                    end
+                    up_exceed += 1
+                  end
+                  hour_results << sorted_offers_aux.where(period: per + 1)[ag]
+                else
+                  hour_results << reserve.where(period: per + 1)[ag]
+                end
+                sorted_offers[ag].price = 1000
+              end
+            else
+              if (0.9 * system_needs_down[per] - energy_down) < 0
+                ####
+              else
+                sorted_offers[ag].energy_down = 0
+              end
+              if (0.9 * system_needs_up[per] - energy_up) > 0
+                ###
+              else
+                sorted_offers[ag].energy = 0
+              end
+              hour_results << sorted_offers.where(period: per + 1)[ag]
+              throw :done
+            end
           end
-        else
-          if (0.9 * hourly_need[0] - energy0) < 0
-            ####
-          else
-            Test[ag][1] = "0.0"
-          end
-          if (0.9 * hourly_need[1] - energy1) > 0
-            ###
-          else
-            Test[ag][2] = "0.0"
-          end
-        j = Test.length #throw catch
-        HourResults.add(Test[ag])
         end
       end
     end

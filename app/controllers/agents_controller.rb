@@ -110,6 +110,7 @@ class AgentsController < ApplicationController
         offer = BmUnitOffer.new(
           price: price_row[val - 1],
           energy: energy_row[val - 1],
+          energy_down: energy_row[val - 1] * -0.5,
           period: val,
           bm_unit_id: BmUnit.last.id
         )
