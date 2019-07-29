@@ -431,38 +431,48 @@ class SimulationsController < ApplicationController
           end
         end
         aux = 180
-        # if energy_up + sorted_offers[ag].energy < 0.9 * system_needs_up[per] || energy_down + (sorted_offers[ag].energy * (-0.5)) > 0.9 *  system_needs_down[per])
-        #   energy_up += sorted_offers[ag].energy
-        #   energy_down += energy_up * (-0.5)
-          # if (energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per]) {
 
-        #     if (energy_down > 0.9 * system_needs_down[per] || energy1 < 0.9 * hourly_need[1]) {
+        if energy_up + sorted_offers[ag].energy < 0.9 * system_needs_up[per] || energy_down + (sorted_offers[ag].energy * (-0.5)) > 0.9 * system_needs_down[per]
+          energy_up += sorted_offers[ag].energy
+          energy_down += energy_up * (-0.5)
 
-        #         if ((0.9 * system_needs_down[per] - energy_down) > 0 || (0.9 * hourly_need[1] - energy1) < 0) {
-        #             if ((0.9 * system_needs_down[per] - energy_down) > 0) {
-        #                 if (Dexceed == 0) {
-        #                     Testaux[ag][1] = String.valueOf(Double.valueOf(Test[ag][1]) - (system_needs_down[per] - energy_down));
-        #                 } else {
-        #                     Testaux[ag][1] = "0.0";
-        #                 }
-        #             }
-        #             if ((0.9 * hourly_need[1] - energy1) < 0) {
-        #                 if (Uexceed == 0) {
-        #                     Testaux[ag][2] = String.valueOf(Double.valueOf(Test[ag][2]) - (hourly_need[1] - energy1));
-        #                 } else {
-        #                     Testaux[ag][2] = "0.0";
-        #                 }
-        #                 Uexceed++;
-        #             }
-        #             HourResults.add(Testaux[ag]);
-        #         } else {
-        #             HourResults.add(reserve[ag]);
-        #         }
-        #         Test[ag][3] = "1000";
-        #     }
-        # }
-      #       }
-
+          if energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per]
+            if (0.9 * system_needs_down[per] - energy_down) > 0 || (0.9 * system_needs_up[per] - energy_up) < 0
+              if (0.9 * system_needs_down[per] - energy_down) > 0
+                if down_exceed == 0
+                  Testaux[ag][1] = String.valueOf(Double.valueOf(Test[ag][1]) - (system_needs_down[per] - energy_down))
+                else
+                  Testaux[ag][1] = "0.0"
+                end
+              end
+              if (0.9 * system_needs_up[per] - energy_up) < 0
+                if up_exceed == 0
+                  Testaux[ag][2] = String.valueOf(Double.valueOf(Test[ag][2]) - (system_needs_up[per] - energy_up))
+                else
+                  Testaux[ag][2] = "0.0"
+                end
+              #up_exceed ++
+              end
+              HourResults.add(Testaux[ag])
+            else
+              HourResults.add(reserve[ag])
+            end
+          Test[ag][3] = "1000"
+          end
+        else
+          if (0.9 * hourly_need[0] - energy0) < 0
+            ####
+          else
+            Test[ag][1] = "0.0"
+          end
+          if (0.9 * hourly_need[1] - energy1) > 0
+            ###
+          else
+            Test[ag][2] = "0.0"
+          end
+        j = Test.length #throw catch
+        HourResults.add(Test[ag])
+        end
       end
     end
   end
