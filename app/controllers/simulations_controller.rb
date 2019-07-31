@@ -401,7 +401,7 @@ class SimulationsController < ApplicationController
     bm_units = BmUnit.all #where participant equals true
 
     sorted_offers = BmUnitOffer.joins(:bm_unit)
-                               .select('bm_units.id,
+                               .select('bm_unit_offers.bm_unit_id,
                                         bm_unit_offers.id,
                                         bm_unit_offers.energy,
                                         bm_unit_offers.energy_down,
@@ -422,22 +422,43 @@ class SimulationsController < ApplicationController
     ag = 0
     aux = sorted_offers.first.price
 
+    row = []
+    col = []
+    sorted_offers.where(period: 1).each_with_index do |offer, index|
+      byebug
+      row = []
+      row << offer.bm_unit_id
+      row << offer.price
+      row << offer.energy_down
+      row << offer.energy
+      col << row
+      byebug
+    end
+
+
+
 
     (0..23).each do |per|
       hour_results = []
+      energy_down = 0
+      energy_up = 0
+      down_exceed = 0
+      up_exceed = 0
+      ag = 0
+      aux = sorted_offers.where(period: per + 1).first.price
       if system_needs_up[per] != 0 && system_needs_down[per] != 0
         catch :done do
           (0..bm_units.count).each do |val1|
             byebug
-            bm_units.each_with_index do |unit, i|
+            (1..bm_units.count).each do |val2|
               byebug
-              if sorted_offers.where(period: per + 1)[i].price <= aux && (energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per])
-                aux = sorted_offers.where(period: per + 1)[i].price
-                ag = i
+              if sorted_offers.where(period: per + 1)[val2 - 1].price <= aux && (energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per])
                 byebug
+                aux = sorted_offers.where(period: per + 1)[val2 - 1].price
+                ag = val2 - 1
               elsif energy_down <= 0.9 * system_needs_down[per] && energy_up >= 0.9 * system_needs_up[per]
-                throw :done
                 byebug
+                throw :done
               end
             end
             aux = 180
@@ -464,11 +485,14 @@ class SimulationsController < ApplicationController
                     end
                     up_exceed += 1
                   end
+                  byebug
                   hour_results << sorted_offers_aux.where(period: per + 1)[ag]
                 else
+                  byebug
                   hour_results << reserve.where(period: per + 1)[ag]
                 end
-                sorted_offers[ag].price = 1000
+                byebug
+                sorted_offers.where(period: per + 1)[ag].price = 1000
               end
             else
               if (0.9 * system_needs_down[per] - energy_down) < 0
@@ -481,8 +505,10 @@ class SimulationsController < ApplicationController
               else
                 sorted_offers[ag].energy = 0
               end
+              byebug
               hour_results << sorted_offers.where(period: per + 1)[ag]
-              throw :done
+              break
+              #throw :done
             end
           end
         end
