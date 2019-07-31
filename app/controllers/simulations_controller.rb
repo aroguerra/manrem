@@ -422,39 +422,58 @@ class SimulationsController < ApplicationController
     ag = 0
     aux = sorted_offers.first.price
 
-    row = []
-    col = []
-    sorted_offers.where(period: 1).each_with_index do |offer, index|
-      byebug
-      row = []
-      row << offer.bm_unit_id
-      row << offer.price
-      row << offer.energy_down
-      row << offer.energy
-      col << row
-      byebug
-    end
 
-
+    hour_results = []
 
 
     (0..23).each do |per|
-      hour_results = []
       energy_down = 0
       energy_up = 0
       down_exceed = 0
       up_exceed = 0
       ag = 0
       aux = sorted_offers.where(period: per + 1).first.price
+      row = []
+      offers = []
+      offers_aux = []
+      reserve = []
+
+      sorted_offers.where(period: per + 1).each do |offer|
+        row = []
+        row << offer.bm_unit_id
+        row << offer.energy_down
+        row << offer.energy
+        row << offer.price
+        offers << row
+      end
+
+      sorted_offers.where(period: per + 1).each do |offer|
+        row = []
+        row << offer.bm_unit_id
+        row << offer.energy_down
+        row << offer.energy
+        row << offer.price
+        offers_aux << row
+      end
+
+      sorted_offers.where(period: per + 1).each do |offer|
+        row = []
+        row << offer.bm_unit_id
+        row << offer.energy_down
+        row << offer.energy
+        row << offer.price
+        reserve << row
+      end
+
       if system_needs_up[per] != 0 && system_needs_down[per] != 0
         catch :done do
-          (0..bm_units.count).each do |val1|
+          (1..bm_units.count).each do |val1|
             byebug
             (1..bm_units.count).each do |val2|
               byebug
-              if sorted_offers.where(period: per + 1)[val2 - 1].price <= aux && (energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per])
+              if offers[val2 - 1][3] <= aux && (energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per])
                 byebug
-                aux = sorted_offers.where(period: per + 1)[val2 - 1].price
+                aux = offers[val2 - 1][3]
                 ag = val2 - 1
               elsif energy_down <= 0.9 * system_needs_down[per] && energy_up >= 0.9 * system_needs_up[per]
                 byebug
@@ -463,55 +482,67 @@ class SimulationsController < ApplicationController
             end
             aux = 180
 
-            if energy_up + sorted_offers.where(period: per + 1)[ag].energy < 0.9 * system_needs_up[per] || energy_down + (sorted_offers[ag].energy * (-0.5)) > 0.9 * system_needs_down[per]
-              energy_up += sorted_offers.where(period: per + 1)[ag].energy
-              energy_down += energy_up * (-0.5)
-               byebug
+            if energy_up + offers[ag][2] < 0.9 * system_needs_up[per] || energy_down + offers[ag][1] > 0.9 * system_needs_down[per]
+              energy_up += offers[ag][2]
+              energy_down += offers[ag][1]
+              byebug
 
               if energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per]
                 if (0.9 * system_needs_down[per] - energy_down) > 0 || (0.9 * system_needs_up[per] - energy_up) < 0
                   if (0.9 * system_needs_down[per] - energy_down) > 0
-                    if down_exceed == 0
-                      sorted_offers_aux.where(period: per + 1)[ag].energy_down = sorted_offers_aux.where(period: per + 1)[ag].energy_down - (system_needs_down[per] - energy_down)
-                    else
-                      sorted_offers_aux[ag].energy_down = 0
-                    end
+                    down_exceed == 0 ? offers_aux[ag][1] = offers_aux[ag][1] - (system_needs_down[per] - energy_down) : offers_aux[ag][1] = 0
                   end
                   if (0.9 * system_needs_up[per] - energy_up) < 0
-                    if up_exceed == 0
-                      sorted_offers_aux.where(period: per + 1)[ag].energy = sorted_offers_aux.where(period: per + 1)[ag].energy - (system_needs_up[per] - energy_up)
-                    else
-                      sorted_offers_aux[ag].energy = 0
-                    end
+                    up_exceed == 0 ? offers_aux[ag][2] = offers_aux[ag][2] - (system_needs_up[per] - energy_up) : offers_aux[ag][2] = 0
                     up_exceed += 1
                   end
                   byebug
-                  hour_results << sorted_offers_aux.where(period: per + 1)[ag]
+                  hour_results << offers_aux[ag]
                 else
                   byebug
-                  hour_results << reserve.where(period: per + 1)[ag]
+                  hour_results << reserve[ag]
                 end
                 byebug
-                sorted_offers.where(period: per + 1)[ag].price = 1000
+                offers[ag][3] = 1000
               end
             else
               if (0.9 * system_needs_down[per] - energy_down) < 0
                 ####
+                byebug
               else
-                sorted_offers[ag].energy_down = 0
+                offers[ag][1] = 0
               end
               if (0.9 * system_needs_up[per] - energy_up) > 0
                 ###
+                byebug
               else
-                sorted_offers[ag].energy = 0
+                offers[ag][2] = 0
               end
               byebug
-              hour_results << sorted_offers.where(period: per + 1)[ag]
-              break
-              #throw :done
+              hour_results << offers[ag]
+              byebug
+              throw :done
             end
           end
         end
+        # hour_results.each do |array|
+        #   result = BmSecondaryResult.new(
+        #         bm_agent_name: a,
+        #         bm_unit_name: BmUnit.where(id: array[0])[0].name,
+        #         period: per,
+        #         power: BmUnit.where(id: array[0])[0].energy,
+        #         down_traded: array[1],
+        #         power_down: soma,
+        #         up_traded: array[2],
+        #         power_up: soma,
+        #         price: BmUnit.where(id: array[0])[0].price,
+        #         market_price: array.last[3],
+        #         system_down_needs: system_needs_down[per],
+        #         system_up_needs: system_needs_up[per],
+        #         simulation_id: Simulation.last.id
+        #     )
+        #     result.save
+        # end
       end
     end
   end
