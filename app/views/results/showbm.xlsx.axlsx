@@ -1,0 +1,10 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "BM") do |sheet|
+  # Create the header row
+  sheet.add_row ["Unit Name", "Period", "Power", "Down Traded", "Power Down", "Up Traded", "Power UP" , "Price", "Market Price"]
+  # Create entries for each item
+  @results.where(simulation_id: @simulation.id).each do |item|
+    sheet.add_row [item.bm_unit_name, item.period, item.power, item.down_traded, item.power_down, item.up_traded, item.power_up, item.price, item.market_price]
+  end
+end

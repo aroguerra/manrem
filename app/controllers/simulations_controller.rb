@@ -400,6 +400,14 @@ class SimulationsController < ApplicationController
     previsions = BmSecondaryNeed.where(user_id: current_user.id)
     bm_units = BmUnit.all #where participant equals true
 
+    simulation_sym = Simulation.new(
+      date: DateTime.now,
+      market_type: "balance market",
+      pricing_mechanism: "secondary",
+      user_id: current_user.id
+    )
+    simulation_sym.save
+
     sorted_offers = BmUnitOffer.joins(:bm_unit)
                                .select('bm_unit_offers.bm_unit_id,
                                         bm_unit_offers.id,
@@ -421,12 +429,11 @@ class SimulationsController < ApplicationController
     up_exceed = 0
     ag = 0
     aux = sorted_offers.first.price
-
-
     hour_results = []
 
 
     (0..23).each do |per|
+     # byebug
       energy_down = 0
       energy_up = 0
       down_exceed = 0
@@ -437,6 +444,11 @@ class SimulationsController < ApplicationController
       offers = []
       offers_aux = []
       reserve = []
+      up_sum = 0
+      down_sum = 0
+      hour_results = []
+
+     # byebug
 
       sorted_offers.where(period: per + 1).each do |offer|
         row = []
@@ -468,15 +480,15 @@ class SimulationsController < ApplicationController
       if system_needs_up[per] != 0 && system_needs_down[per] != 0
         catch :done do
           (1..bm_units.count).each do |val1|
-            byebug
+            # byebug
             (1..bm_units.count).each do |val2|
-              byebug
+              # byebug
               if offers[val2 - 1][3] <= aux && (energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per])
-                byebug
+                # byebug
                 aux = offers[val2 - 1][3]
                 ag = val2 - 1
               elsif energy_down <= 0.9 * system_needs_down[per] && energy_up >= 0.9 * system_needs_up[per]
-                byebug
+                # byebug
                 throw :done
               end
             end
@@ -485,7 +497,7 @@ class SimulationsController < ApplicationController
             if energy_up + offers[ag][2] < 0.9 * system_needs_up[per] || energy_down + offers[ag][1] > 0.9 * system_needs_down[per]
               energy_up += offers[ag][2]
               energy_down += offers[ag][1]
-              byebug
+              # byebug
 
               if energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per]
                 if (0.9 * system_needs_down[per] - energy_down) > 0 || (0.9 * system_needs_up[per] - energy_up) < 0
@@ -496,54 +508,89 @@ class SimulationsController < ApplicationController
                     up_exceed == 0 ? offers_aux[ag][2] = offers_aux[ag][2] - (system_needs_up[per] - energy_up) : offers_aux[ag][2] = 0
                     up_exceed += 1
                   end
-                  byebug
+                  # byebug
                   hour_results << offers_aux[ag]
                 else
-                  byebug
+                  # byebug
                   hour_results << reserve[ag]
                 end
-                byebug
+                # byebug
                 offers[ag][3] = 1000
               end
             else
               if (0.9 * system_needs_down[per] - energy_down) < 0
                 ####
-                byebug
+                # byebug
               else
                 offers[ag][1] = 0
               end
               if (0.9 * system_needs_up[per] - energy_up) > 0
                 ###
-                byebug
+                # byebug
               else
                 offers[ag][2] = 0
               end
-              byebug
+              # byebug
               hour_results << offers[ag]
-              byebug
+              # byebug
               throw :done
             end
+           # byebug
+            puts "entrou #{per}1"
           end
+         # byebug
+            puts "entrou #{per}2"
+
         end
-        # hour_results.each do |array|
-        #   result = BmSecondaryResult.new(
-        #         bm_agent_name: a,
-        #         bm_unit_name: BmUnit.where(id: array[0])[0].name,
-        #         period: per,
-        #         power: BmUnit.where(id: array[0])[0].energy,
-        #         down_traded: array[1],
-        #         power_down: soma,
-        #         up_traded: array[2],
-        #         power_up: soma,
-        #         price: BmUnit.where(id: array[0])[0].price,
-        #         market_price: array.last[3],
-        #         system_down_needs: system_needs_down[per],
-        #         system_up_needs: system_needs_up[per],
-        #         simulation_id: Simulation.last.id
-        #     )
-        #     result.save
-        # end
+       # byebug
+        puts "entrou #{per}3"
+        up_sum = hour_results.sum { |x| x[2] }
+        down_sum = hour_results.sum { |x| x[1] }
+        id_array = []
+
+        hour_results.each do |array|
+          id_array << array[0]
+          result = BmSecondaryResult.new(
+            bm_agent_name: BmAgent.where(id: BmUnit.where(id: array[0])[0].bm_agent_id)[0].name,
+            bm_unit_name: BmUnit.where(id: array[0])[0].name,
+            period: per,
+            power: BmUnitOffer.where(bm_unit_id: array[0], period: per + 1)[0].energy,
+            down_traded: array[1],
+            power_down: down_sum,
+            up_traded: array[2],
+            power_up: up_sum,
+            price: BmUnitOffer.where(bm_unit_id: array[0], period: per + 1)[0].price,
+            market_price: hour_results.last[3],
+            system_down_needs: system_needs_down[per],
+            system_up_needs: system_needs_up[per],
+            simulation_id: Simulation.last.id
+          )
+          result.save
+        end
+       # byebug
+        bm_units.each do |unit|
+          next if id_array.include?(unit.id)
+          result = BmSecondaryResult.new(
+            bm_agent_name: BmAgent.where(id: BmUnit.where(id: unit.id)[0].bm_agent_id)[0].name,
+            bm_unit_name: unit.name,
+            period: per,
+            power: BmUnitOffer.where(bm_unit_id: unit.id, period: per + 1)[0].energy,
+            down_traded: 0,
+            power_down: down_sum,
+            up_traded: 0,
+            power_up: up_sum,
+            price: BmUnitOffer.where(bm_unit_id: unit.id, period: per + 1)[0].price,
+            market_price: hour_results.last[3],
+            system_down_needs: system_needs_down[per],
+            system_up_needs: system_needs_up[per],
+            simulation_id: Simulation.last.id
+          )
+          result.save
+        end
       end
+     # byebug
+      puts "entrou #{per}4"
     end
+    redirect_to simulation_path
   end
 end
