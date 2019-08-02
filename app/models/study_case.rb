@@ -1,0 +1,2 @@
+class StudyCase < ApplicationRecord
+end
