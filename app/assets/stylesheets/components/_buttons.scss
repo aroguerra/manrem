@@ -6,7 +6,7 @@
   line-height: normal;
   font-size: 14px;
   color: #0238C0;
-  padding: 14px 60px;
+  padding: .375rem .75rem;
   margin-bottom: 0px;
   margin-right: 10px;
   border: 1px solid #0238C0;
@@ -28,11 +28,12 @@
   line-height: normal;
   font-size: 14px;
   color: #F0F0F0;
-  padding: 14px 35px;
+  padding: .375rem .75rem;
   margin-bottom: 0px;
   margin-right: 16px;
   border: 1px solid #0238C0;
   opacity: 0.9;
+  text-align: center;
   &:hover, &:focus {
     opacity: 1;
   }

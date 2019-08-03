@@ -13,6 +13,16 @@ CSV_OPTIONS = {
   header_converters: :symbol
 }
 
+CSV.foreach('./db/casestudies.csv', CSV_OPTIONS) do |row|
+  casestudy = StudyCase.new(
+    name: row[0],
+    author: row[1],
+    content: row[2],
+    excel_url: row[3]
+    )
+  casestudy.save
+end
+
 CSV.foreach('./db/user.csv', CSV_OPTIONS) do |row|
   user = User.new(
     email: row[0],
