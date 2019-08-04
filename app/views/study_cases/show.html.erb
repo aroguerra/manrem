@@ -1,36 +1,22 @@
 abraham
-
 <div class="container">
-  <% @case_studies.each_with_index do |item, index|%>
+  <% @case_studies.each do |item|%>
     <div class=row>
       <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="card-product">
           <img src="https://img.icons8.com/nolan/96/000000/stocks.png">
           <div class="card-product-infos">
-            <h2>Simulação <%=index + 1%></h2>
+            <h2> <%= item.name %></h2>
             <div class="sim-info">
-              <p><strong>Data da Simulação</strong></p>
-              <p>data: <%= item.date.strftime("%B %d")  %></p>
-            </div>
-            <div class="sim-info">
-              <p><strong>Tipo de Mercado</strong></p>
-              <p>Mercado: <%= item.market_type %></p>
+              <p><strong>Autor</strong></p>
+              <p><%= item.author %></p>
             </div>
             <div class="sim-info">
               <p><strong>Descrição</strong></p>
-              <p>Tipo de mercado: <%= item.pricing_mechanism %> </p>
-            </div>
-            <div class="sim-info">
-              <p><strong>Agentes</strong></p>
-              <p><%=  %></p>
+              <p><%= item.content %> </p>
             </div>
           </div>
-          <div class="btn-landing-white">
-            <%= link_to "See Results", results_showbm_path(item.id)%>
-          </div>
-          <div class="btn-landing-gray">
-            <%= link_to "Delete", results_show_path(item.id)%>
-          </div>
+           <a class="btn-landing-white" href="<%= item.excel_url %>">Download .xlsx</a>
         </div>
       </div>
     </div>

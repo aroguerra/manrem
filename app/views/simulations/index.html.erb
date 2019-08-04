@@ -1,39 +1,39 @@
 
 <h1>Simulations <i class="fas fa-exchange-alt"></i></h1>
 <div class="container">
-  <% @simulations.each_with_index do |item, index|%>
-    <div class=row>
-      <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="card-product">
-          <img src="https://img.icons8.com/nolan/96/000000/stocks.png">
-          <div class="card-product-infos">
-            <h2>Simulação <%=index + 1%></h2>
-            <div class="sim-info">
-              <p><strong>Data da Simulação</strong></p>
-              <p>data: <%= item.date.strftime("%B %d")  %></p>
-            </div>
-            <div class="sim-info">
-              <p><strong>Tipo de Mercado</strong></p>
-              <p>Mercado: <%= item.market_type %></p>
-            </div>
-            <div class="sim-info">
-              <p><strong>Descrição</strong></p>
-              <p>Tipo de mercado: <%= item.pricing_mechanism %> </p>
-            </div>
-            <div class="sim-info">
-              <p><strong>Agentes</strong></p>
-              <p><%=  %></p>
-            </div>
+<% @simulations.each_with_index do |item, index|%>
+  <div class=row>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+      <div class="card-product">
+        <img src="https://img.icons8.com/nolan/96/000000/stocks.png">
+        <div class="card-product-infos">
+          <h2>Simulação <%=index + 1%></h2>
+          <div class="sim-info">
+            <p><strong>Data da Simulação</strong></p>
+            <p>data: <%= item.date.strftime("%B %d")  %></p>
           </div>
-          <div class="btn-landing-white">
-            <%= link_to "See Results", results_showbm_path(item.id)%>
+          <div class="sim-info">
+            <p><strong>Tipo de Mercado</strong></p>
+            <p>Mercado: <%= item.market_type %></p>
           </div>
-          <div class="btn-landing-gray">
-            <%= link_to "Delete", results_show_path(item.id)%>
+          <div class="sim-info">
+            <p><strong>Descrição</strong></p>
+            <p>Tipo de mercado: <%= item.pricing_mechanism %> </p>
           </div>
+          <div class="sim-info">
+            <p><strong>Agentes</strong></p>
+            <p><%=  %></p>
+          </div>
+        </div>
+        <div class="btn-landing-white">
+          <%= link_to "See Results", results_showbm_path(item.id)%>
+        </div>
+        <div class="btn-landing-gray">
+          <%= link_to "Delete", item, method: :delete, data: { confirm: "Are you sure?" }%>
         </div>
       </div>
     </div>
-  <% end%>
+  </div>
+<% end%>
 </div>
 

@@ -4,8 +4,10 @@ Rails.application.routes.draw do
   get 'dashboard', to: "pages#dashboard"
 
   get  "simulation", to: "simulations#index"
-  get  "sym", to: "simulations#sym"
+  post  "sym", to: "simulations#sym"
   get  "asym", to: "simulations#asym"
+
+  delete "simulation/:id", to: "simulations#destroy"
 
   get "simulation/:simulation_id/results", to: "results#show", as: 'results_show'
   get "simulation/:simulation_id/resultsbm", to: "results#showbm", as: 'results_showbm'

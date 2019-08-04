@@ -6,6 +6,9 @@ class SimulationsController < ApplicationController
   end
 
   def sym
+
+    agents = params[:id].to_i
+
     @my_buyers = Agent.where(user_id: current_user.id, category: "Buyer")
     @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
 
@@ -110,7 +113,6 @@ class SimulationsController < ApplicationController
         if bid.price >= period_market_price
           if power > bid.energy
             ####criar resultado com traded_power = bid.power####
-
             result = Result.new(
               period: per,
               power: bid.energy,
@@ -122,13 +124,10 @@ class SimulationsController < ApplicationController
             )
             result.save
 
-
-
             buyers_traded_power << bid.energy
             power -= bid.energy
           else
             #### criar resultado com traded_power = power
-
             result = Result.new(
               period: per,
               power: bid.energy,
@@ -145,7 +144,6 @@ class SimulationsController < ApplicationController
           end
         else
           #### criar resultado com traded_power = 0 (no buy_bolsa)
-
           result = Result.new(
             period: per,
             power: bid.energy,
@@ -184,7 +182,6 @@ class SimulationsController < ApplicationController
             power -= offer.energy
           else
             #### criar resultado com traded_power = power
-
             result = Result.new(
               period: per,
               power: offer.energy,
@@ -195,7 +192,6 @@ class SimulationsController < ApplicationController
               agent_name: Agent.where(id: offer.agent_id)[0].name
             )
             result.save
-
 
             sellers_traded_power << power
             power = 0
@@ -595,5 +591,13 @@ class SimulationsController < ApplicationController
   end
 
   def bmterciary
+  end
+
+  def destroy
+    @simulation = Simulation.find(params[:id])
+    @simulation.destroy
+
+    # no need for app/views/restaurants/destroy.html.erb
+    redirect_to simulation_path
   end
 end

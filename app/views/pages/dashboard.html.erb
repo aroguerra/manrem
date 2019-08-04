@@ -1,36 +1,43 @@
 <div class="container">
   <div class="row">
     <h1>Dashboard <img src="https://img.icons8.com/ios/35/000000/menu-filled.png"></h1>
-    <a href="https://res.cloudinary.com/aroguerra/raw/upload/Case_Study_1.xlsx"> <p>case1</p></a>
   </div>
   <br>
+  <a href="http://www.omie.es/files/flash/ResultadosMercado.html#" target="_blank">omie</a>
   <div class="row">
     <h3>My Simulations</h3>
   </div>
   <div class="row">
-    <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="col-xs-12 col-sm-6 col-md-3">
       <div class="info">
           <p>Pool Market - Sym</p>
           <h1> <%=  @my_simulations_pool_sym.count %> </h1>
-          <p> Simulações</p>
+          <p> Simulations</p>
       </div>
     </div>
-    <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="col-xs-12 col-sm-6 col-md-3">
       <div class="info">
           <p>Pool Market - ASym</p>
           <h1> <%= @my_simulations_pool_asym.count %> </h1>
-          <p> Simulações </p>
+          <p> Simulations </p>
         </div>
     </div>
-    <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="col-xs-12 col-sm-6 col-md-3">
       <div class="info">
-          <p>Balance Market</p>
+          <p>Balance Market - Secondary</p>
           <h1> <%=  0 %> </h1>
-          <p> Simulações</p>
+          <p> Simulations</p>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-3">
+      <div class="info">
+          <p>Balance Market - Terciary</p>
+          <h1> <%=  0 %> </h1>
+          <p> Simulations</p>
         </div>
     </div>
   </div>
-  <div class="btn-landing col-xs-12 col-sm-12 col-md-2">
+  <div class="btn-landing-white">
       <%=link_to 'Simulation', bmsecondary_path  %>
   </div>
   <br>
@@ -38,23 +45,24 @@
   <div class="row">
     <h3>My Agents</h3>
   </div>
-  <div class="row">
-    <div class="col-xs-12 col-sm-6 col-md-6">
-      <div class="info">
-          <p>Buyers</p>
-          <h1> <%=  @my_buyers.count %> </h1>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-3">
+        <div class="info">
+            <p>Buyers</p>
+            <h1> <%=  @my_buyers.count %> </h1>
+        </div>
       </div>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-md-6">
-      <div class="info">
-          <p>Sellers</p>
-          <h1> <%= @my_sellers.count %> </h1>
+      <div class="col-xs-12 col-sm-6 col-md-3">
+        <div class="info">
+            <p>Sellers</p>
+            <h1> <%= @my_sellers.count %> </h1>
+        </div>
       </div>
+
     </div>
-    <div class="btn-landing col-xs-12 col-sm-12 col-md-2">
-      <%=link_to 'My Agents', agents_path%>
+  <div class="btn-landing-white">
+    <%=link_to 'My Agents', agents_path%>
   </div>
-</div>
 </div>
 
 
