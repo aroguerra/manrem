@@ -9,6 +9,11 @@ class AgentsController < ApplicationController
     @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
   end
 
+  def participantsbm
+    @my_bm_agents = BmAgent.where(user_id: current_user.id)
+    #@my_bm_units = BmUnit.map {|unit| if unit.bm_agent_id}
+  end
+
   def import
     xlsx = Roo::Spreadsheet.open(params[:file])
 

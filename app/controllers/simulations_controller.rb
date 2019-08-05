@@ -8,12 +8,18 @@ class SimulationsController < ApplicationController
 
   def sym
 
-    buyss = params[:idb].keys
-    sllers = params[:ids].keys
-    byebug
-    @my_buyers = Agent.where(user_id: current_user.id, category: "Buyer")
-    @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
+    buyers_participants = params[:idb].keys
+    sellers_participants = params[:ids].keys
 
+    @my_buyers = buyers_participants.map { |participant| Agent.where(id: participant.to_i)}
+    @my_buyers.flatten!
+    @my_sellers = sellers_participants.map { |participant| Agent.where(id: participant.to_i)}
+    @my_sellers.flatten!
+
+    # @my_buyers = Agent.where(user_id: current_user.id, category: "Buyer")
+    # @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
+
+      #byebug
     simulation_sym = Simulation.new(
       date: DateTime.now,
       market_type: "pool market",
@@ -220,8 +226,16 @@ class SimulationsController < ApplicationController
   end
 
   def asym
-    @my_buyers = Agent.where(user_id: current_user.id, category: "Buyer")
-    @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
+    buyers_participants = params[:idb].keys
+    sellers_participants = params[:ids].keys
+
+    @my_buyers = buyers_participants.map { |participant| Agent.where(id: participant.to_i) }
+    @my_buyers.flatten!
+    @my_sellers = sellers_participants.map { |participant| Agent.where(id: participant.to_i) }
+    @my_sellers.flatten!
+
+    # @my_buyers = Agent.where(user_id: current_user.id, category: "Buyer")
+    # @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
 
     simulation_asym = Simulation.new(
       date: DateTime.now,
