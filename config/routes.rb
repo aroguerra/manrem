@@ -3,11 +3,13 @@ Rails.application.routes.draw do
   root to: 'pages#home'
   get 'dashboard', to: "pages#dashboard"
 
-  get  "simulation", to: "simulations#index"
+  get  "simulations", to: "simulations#index"
   post  "sym", to: "simulations#sym"
   get  "asym", to: "simulations#asym"
 
-  delete "simulation/:id", to: "simulations#destroy"
+  resources :simulations, only: [:show, :destroy]
+  get "simulations/:id", to: "simulations#show"
+  delete "simulations/:id", to: "simulations#destroy"
 
   get "simulation/:simulation_id/results", to: "results#show", as: 'results_show'
   get "simulation/:simulation_id/resultsbm", to: "results#showbm", as: 'results_showbm'

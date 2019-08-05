@@ -5,6 +5,10 @@ class SimulationsController < ApplicationController
     @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
   end
 
+  # def show
+  #   @simulation = Simulation.find(params[:id])
+  # end
+
   def sym
 
     agents = params[:id].to_i
@@ -594,10 +598,11 @@ class SimulationsController < ApplicationController
   end
 
   def destroy
+    #byebug
     @simulation = Simulation.find(params[:id])
     @simulation.destroy
 
     # no need for app/views/restaurants/destroy.html.erb
-    redirect_to simulation_path
+    redirect_to simulations_path
   end
 end
