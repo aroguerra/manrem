@@ -1,11 +1,17 @@
 <h1>Participants</h1>
+<!-- <form action="/sym" method="post">
+<% @my_buyers.each do |invoice| %>
+  <%= check_box_tag "invoice_ids[]", invoice.id %>
+<% end %>
+<input type="submit" value="Submit" class="btn-landing">
+</form> -->
 
 <div class ="container">
   <form action="/sym" method="post">
     <div class ="row">
       <% @my_buyers.each do |buyer| %>
         <div class="custom-control custom-checkbox">
-          <input type="checkbox" name="<%= buyer.id %>" class="custom-control-input" id="<%= buyer.id %>" checked>
+          <input type="checkbox" name="idb[<%= buyer.id %>]" class="custom-control-input" id="<%= buyer.id %>" checked>
           <label class="custom-control-label" for="<%= buyer.id %>"> <%=buyer.name %></label>
         </div>
       <% end %>
@@ -14,7 +20,7 @@
     <div class ="row">
       <% @my_sellers.each do |seller| %>
         <div class="custom-control custom-checkbox">
-          <input type="checkbox" name="<%= seller.id %>" class="custom-control-input" id="<%= seller.id %>" checked>
+          <input type="checkbox" name="ids[<%= seller.id %>]" class="custom-control-input" id="<%= seller.id %>" checked>
           <label class="custom-control-label" for="<%= seller.id %>"> <%= seller.name %></label>
         </div>
       <% end %>

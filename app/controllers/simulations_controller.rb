@@ -1,18 +1,16 @@
 class SimulationsController < ApplicationController
+  skip_before_action :verify_authenticity_token
   def index
     @simulations = Simulation.where(user_id: current_user.id).order('date DESC')
     @my_buyers = Agent.where(user_id: current_user.id, category: "Buyer")
     @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
   end
 
-  # def show
-  #   @simulation = Simulation.find(params[:id])
-  # end
-
   def sym
 
-    agents = params[:id].to_i
-
+    buyss = params[:idb].keys
+    sllers = params[:ids].keys
+    byebug
     @my_buyers = Agent.where(user_id: current_user.id, category: "Buyer")
     @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
 
@@ -218,7 +216,7 @@ class SimulationsController < ApplicationController
         end
       end
     end
-    redirect_to simulation_path
+    redirect_to simulations_path
   end
 
   def asym
@@ -393,7 +391,7 @@ class SimulationsController < ApplicationController
         end
       end
     end
-    redirect_to simulation_path
+    redirect_to simulations_path
   end
 
   def bmsecondary
@@ -598,11 +596,9 @@ class SimulationsController < ApplicationController
   end
 
   def destroy
-    #byebug
     @simulation = Simulation.find(params[:id])
     @simulation.destroy
 
-    # no need for app/views/restaurants/destroy.html.erb
     redirect_to simulations_path
   end
 end
