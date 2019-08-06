@@ -410,7 +410,7 @@ class SimulationsController < ApplicationController
 
   def bmsecondary
     previsions = BmSecondaryNeed.where(user_id: current_user.id)
-    bm_units = BmUnit.all #where participant equals true
+    bm_units = BmUnit.all#where participant equals true
 
     simulation_sym = Simulation.new(
       date: DateTime.now,
@@ -603,7 +603,7 @@ class SimulationsController < ApplicationController
      # byebug
       puts "entrou #{per}4"
     end
-    redirect_to simulation_path
+    redirect_to simulations_path
   end
 
   def bmterciary

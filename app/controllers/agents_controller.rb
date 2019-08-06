@@ -10,8 +10,10 @@ class AgentsController < ApplicationController
   end
 
   def participantsbm
+    #byebug
     @my_bm_agents = BmAgent.where(user_id: current_user.id)
-    #@my_bm_units = BmUnit.map {|unit| if unit.bm_agent_id}
+
+    #my_bm_units = BmUnit.select
   end
 
   def import

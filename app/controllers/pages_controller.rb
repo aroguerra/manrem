@@ -10,6 +10,8 @@ class PagesController < ApplicationController
     @my_simulations_pool_asym = Simulation.where(user_id: current_user.id, market_type: "pool market", pricing_mechanism: "assymetrical")
     @my_simulations_pool_sym = Simulation.where(user_id: current_user.id, market_type: "pool market", pricing_mechanism: "symetrical")
 
+    @my_simulations_bm_sec = Simulation.where(user_id: current_user.id, market_type: "balance market", pricing_mechanism: "secondary")
+
 
     @my_agents = Agent.where(user_id: current_user.id)
     @my_buyers = Agent.where(user_id: current_user.id, category: "Buyer")
