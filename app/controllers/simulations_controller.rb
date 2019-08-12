@@ -409,8 +409,12 @@ class SimulationsController < ApplicationController
   end
 
   def bmsecondary
+
+    units_participants = params[:idb].keys
+
     previsions = BmSecondaryNeed.where(user_id: current_user.id)
-    bm_units = BmUnit.all#where participant equals true
+    bm_units = units_participants.map { |participant| BmUnit.where(id: participant.to_i) }#where participant equals true
+    bm_units.flatten!
 
     simulation_sym = Simulation.new(
       date: DateTime.now,

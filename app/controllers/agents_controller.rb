@@ -10,10 +10,9 @@ class AgentsController < ApplicationController
   end
 
   def participantsbm
-    #byebug
     @my_bm_agents = BmAgent.where(user_id: current_user.id)
-
-    #my_bm_units = BmUnit.select
+    @my_bm_units = @my_bm_agents.map { |agent| agent.bm_units }
+    @my_bm_units.flatten!
   end
 
   def import
@@ -143,4 +142,3 @@ class AgentsController < ApplicationController
     end
   end
 end
-

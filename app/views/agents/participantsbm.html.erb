@@ -2,7 +2,7 @@
 <div class ="container">
   <form action="/bmsecondary" method="post">
     <div class ="row">
-      <% @my_bm_agents.each do |agent| %>
+      <% @my_bm_units.each do |agent| %>
         <div class="custom-control custom-checkbox">
           <input type="checkbox" name="idb[<%= agent.id %>]" class="custom-control-input" id="<%= agent.id %>" checked>
           <label class="custom-control-label" for="<%= agent.id %>"> <%=agent.name %></label>
