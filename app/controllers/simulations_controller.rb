@@ -269,6 +269,7 @@ class SimulationsController < ApplicationController
       if demand_power > 0
         sellers_offers.each do |offer|
           accepted_power < demand_power ? accepted_power += offer.energy && period_market_price = offer.price : break
+          byebug
         end
       end
 
