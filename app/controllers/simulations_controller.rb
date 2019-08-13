@@ -1,5 +1,6 @@
 class SimulationsController < ApplicationController
   skip_before_action :verify_authenticity_token
+
   def index
     @simulations = Simulation.where(user_id: current_user.id).order('date DESC')
     @my_buyers = Agent.where(user_id: current_user.id, category: "Buyer")

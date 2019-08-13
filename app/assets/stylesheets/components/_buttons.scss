@@ -50,10 +50,10 @@
   text-align: center;
   border-radius: 40px;
   font-style: normal;
-  font-weight: bold;
   line-height: normal;
   width: 5rem;
   font-size: 14px;
+  width: 160px;
   color: #9BA3AC;
   padding: .375rem .75rem;
   margin-bottom: 0px;
@@ -65,5 +65,29 @@
   }
   a {
     color: #9BA3AC;
+  }
+}
+
+.btn-landing-black {
+  background: #000;
+  text-align: center;
+  border-radius: 5px;
+  font-style: normal;
+  line-height: normal;
+  font-weight: lighter;
+  width: 5rem;
+  font-size: 14px;
+  width: 160px;
+  color: #FFF;
+  padding: .375rem .75rem;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  border: 1px solid #9BA3AC;
+  opacity: 0.9;
+  &:hover, &:focus {
+    opacity: 1;
+  }
+  a {
+    color: #FFF;
   }
 }

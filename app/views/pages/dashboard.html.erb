@@ -1,10 +1,74 @@
-<div class="container">
-  <div class="row">
-    <h1>Dashboard <img src="https://img.icons8.com/ios/35/000000/menu-filled.png"></h1>
+<div class="img-1">
+  <div class="caption">
+    <span class= border>
+      Dashboard
+    </span>
   </div>
-  <div class="row">
+  <div class="intro">
+    <p>Estás no Dashboard! Aqui podes consultar todos os teus registos no Matrem online.
+    Podes verificar os agentes carregados e o número de simulações realizadas de cada tipo de mercado.
+    Aqui dás inicio às simulações e podes obter mais informação sobre cada tipo de mercado: Mercado Diário, Mercado de Reservas Secundário e Terciário e Mercado de Futuros</p>
+    <div class="inf">
+      <h5>Mais informações sobre o tipo de mercados</h5>
+      <div style="display: flex; justify-content: space-between; margin-left:250px; margin-right:250px">
+          <div class="btn-landing-black">
+            <%=link_to 'Mercado Diário', "http://www.erse.pt/pt/supervisaodemercados/mercadodeelectricidade/mercadodiario/Paginas/default.aspx
+", :target => "_blank"%>
+          </div>
+          <div class="btn-landing-black">
+            <%=link_to 'Mercado Reservas', agents_path%>
+          </div>
+          <div class="btn-landing-black">
+            <%=link_to 'Mercado a Prazo', agents_path%>
+          </div>
+          <div class="btn-landing-black">
+            <%=link_to 'Mercado Bilateral', agents_path%>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<div style="color: #777;background-color:white;text-align:center;padding:50px 60px;text-align: justify; color: #000000">
+  <h3 style ="text-align:center; margin-bottom: 40px"><strong>Explicação</strong></h3>
+  <div class = "row">
+    <div class = "col-sm-6">
+        <h3><strong>1. Carregar Agentes  &nbsp;<i class="fas fa-users"></i></strong></h3>
+        <p>Carrega os agentes com o excel de input, no separador "agents", para poderes dar inicio à simulação. Cada tipo de mercado tem um excel de input diferente</p>
+    </div>
+    <div class = "col-sm-6">
+      <h3><strong>2. Escolher Participantes &nbsp;<i class="fas fa-search"></i></strong></h3>
+      <p>Após carregares o excel de input com os agentes, podes dar inicio à simulação. Escolhe de entre os agentes que carregaste, os que queres que participem na simulação de mercado e faz a simulação</p>
+    </div>
+  </div>
+  <div class = "row">
+    <div class = "col-sm-6">
+      <h3><strong>3. Obter Resultados &nbsp;<i class="fas fa-chart-line"></i></strong></h3>
+      <p>Com a simulação concluida podes ir ao separador "Simulations" onde terás todas as simulações que realizaste organizadas por data. Nesse separador podes ver os resultados "See Results" ou apagar alguma simulação que aches desnecessaria</p>
+     </div>
+    <div class = "col-sm-6">
+      <h3><strong>4. Baixar Excel &nbsp;<i class="fas fa-file-excel"></i></strong></h3>
+      <p>Terminada a simulação e conferidos os resultados podes fazer o download do excel dos Resultados</p>
+    </div>
+  </div>
+</div>
+
+<div class="img-2">
+  <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
+
+  </div>
+
+</div>
+
+  <!-- <div class="row">
     <h3>My Simulations</h3>
   </div>
+  <div class="row">
+    <div class="card-product">
+      <div class="card-product-infos">
+      </div>
+    </div>
+  </div> -->
+
   <div class="row">
     <div class="col-xs-12 col-sm-6 col-md-3">
       <div class="info">
@@ -35,7 +99,7 @@
         </div>
     </div>
   </div>
-  <div class= "row">
+  <!-- <div class= "row">
     <div class="btn-landing">
         <%=link_to 'Simulate Pool Market', participants_path  %>
     </div>
@@ -65,7 +129,7 @@
     </div>
   <div class="btn-landing">
     <%=link_to 'My Agents', agents_path%>
-  </div>
-</div>
+  </div> -->
+
 
 
