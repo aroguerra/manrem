@@ -53,22 +53,55 @@
 </div>
 
 <div class="img-2">
-  <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
-
+  <div class="market" style="top: 10%; display: flex; justify-content: space-between; align-items: center">
+    <div class="market-info">
+      <h5>Mercado Diário</h5>
+    </div>
+    <div>
+      <h5>Simulações Realizadas</h5>
+      <p> Symmetrical: <%= @my_simulations_pool_sym.count%> </p>
+      <p> Asssymetrical: <%= @my_simulations_pool_asym.count %> </p>
+    </div>
+    <div>
+      <h5>Agentes Carregados</h5>
+      <p> Buyers: <%= @my_buyers.count %> </p>
+      <p> Sellers: <%= @my_sellers.count %> </p>
+    </div>
+    <div class="btn-landing-black">
+        <%=link_to 'Sim Pool Market', participants_path  %>
+    </div>
+  </div>
+  <div class="market" style="top: 40%; display: flex; justify-content: space-between; align-items: center">
+    <div class="market-info">
+      <h5>Mercado Reservas</h5>
+    </div>
+    <div>
+      <h5>Simulações Realizadas</h5>
+      <p> Secundário: <%= @my_simulations_bm_sec.count %></p>
+      <p> Terciário: <%= @my_simulations_pool_asym.count %> </p>
+    </div>
+    <div>
+      <h5>Agentes Carregados</h5>
+      <p> Buyers: <%= @my_buyers.count %> </p>
+      <p> Sellers: <%= @my_sellers.count %> </p>
+    </div>
+    <div class="btn-landing-black">
+        <%=link_to 'Sim Balance Market', participantsbm_path  %>
+    </div>
   </div>
 
+
+
+
+
+
+
+  <div class="market" style="top: 70%;">
+    <p>Mercado reservas</p>
+  </div>
 </div>
 
-  <!-- <div class="row">
-    <h3>My Simulations</h3>
-  </div>
-  <div class="row">
-    <div class="card-product">
-      <div class="card-product-infos">
-      </div>
-    </div>
-  </div> -->
-
+<!--
   <div class="row">
     <div class="col-xs-12 col-sm-6 col-md-3">
       <div class="info">
@@ -98,7 +131,7 @@
           <p> Simulations</p>
         </div>
     </div>
-  </div>
+  </div> -->
   <!-- <div class= "row">
     <div class="btn-landing">
         <%=link_to 'Simulate Pool Market', participants_path  %>

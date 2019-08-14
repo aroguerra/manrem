@@ -20,7 +20,7 @@
 
 .img-2 {
   background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url(https://images.unsplash.com/photo-1523774294084-94691d7bb289?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1655&q=80);
-  height: 100vh;
+  height: 130vh;
 }
 
 .img-1, .img-2, .bgimg-3 {
@@ -59,7 +59,37 @@
 }
 
 .intro .inf {
+  position: absolute;
   margin-top: 50px;
   text-align: center;
 }
+
+
+.market{
+  position: absolute;
+  margin-bottom: 50px;
+  width: 100%;
+  color:white;
+  background-color:#282E34;
+  text-align:center;
+  padding:50px 60px;
+  text-align: justify;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
