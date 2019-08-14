@@ -1,3 +1,9 @@
+.img-sim {
+  background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url(https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover  !important;
+}
 .card-product {
   overflow: hidden;
   height: 120px;
@@ -5,7 +11,7 @@
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 }
 
 .card-product img {
