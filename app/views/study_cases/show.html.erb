@@ -1,4 +1,4 @@
-abraham
+<!-- abraham
 <div class="container">
   <% @case_studies.each do |item|%>
     <div class=row>
@@ -21,5 +21,40 @@ abraham
       </div>
     </div>
   <% end%>
+</div> -->
+
+<div class="img-sim">
+  <div class="caption-sim">
+    <span class="border">Casos de Estudo</span>
+  </div>
+  <div class="intro-sim">
+     <p>Estás nos Casos de Estudo! Aqui econtras algun casos de estudo realizados anteriormente, por outros colegas. Podes descarregar o excel e usá-lo como input de agentes. Tem atenção ao tipo de mercado que foi simulado!</p>
+  </div>
+  <div class="btn-landing-black" style="width: 280px; margin:auto">
+    <span>Número de Casos de Estudo: <%= @case_studies.count %></span>
+  </div>
+  <div style= "margin-top: 10px;">
+    <% @case_studies.each_with_index do |item, index|%>
+      <div class="card-product">
+        <%= image_tag "sim.png" %>
+        <div class="card-product-infos">
+          <h2>Caso de Estudo <%=index + 1%></h2>
+          <div class="sim-info">
+            <p><strong>Autor</strong></p>
+            <p>Nome: <%= item.author  %></p>
+          </div>
+          <div class="sim-info">
+            <p><strong>Caso de Estudo</strong></p>
+            <p>Descrição: <%= item.content %></p>
+          </div>
+        </div>
+        <div class="btn-landing-black">
+          <a href="<%= item.excel_url %>">Download .xlsx</a>
+        </div>
+      </div>
+    <% end%>
+  </div>
 </div>
+
+
 

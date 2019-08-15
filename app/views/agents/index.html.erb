@@ -1,9 +1,21 @@
-<div class ="container">
-    <h1>My Agents</h1>
-    <br>
-    <%= form_tag import_path, multipart: true do   %>
-    <%= file_field_tag :file   %>
-    <%= submit_tag "Import"   %>
+<div class="img-res">
+  <div class="caption-res">
+    <span class="border">Agentes de Mercado</span>
+  </div>
+  <div class="intro-res" style="text-align: center">
+    <p>Neste separador podes carregar os agentes para os diversos tipos de mercado com o excel de input. Podes também carregar as necessidades para o mercado de reservas secundário e terciário</p>
+    <p><strong>Mercado:</strong></p>
+    <p><strong>Tipo:</strong></p>
+    <div class="btn-landing-black" style="margin: auto">
+
+    </div>
+  </div>
+</div>
+      <%= form_tag import_path, multipart: true do   %>
+      <%= file_field_tag :file   %>
+      <%= submit_tag "Import"   %>
+
+
     <% end %>
     <br>
     <%= form_tag importbm_path, multipart: true do   %>
@@ -33,4 +45,4 @@
              <% end %>
           </tbody>
         </table>
-    </div>
+    <

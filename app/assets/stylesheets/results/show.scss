@@ -1,13 +1,37 @@
-
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
-
-body {
-  background-color: #FFFFF;
-  // font-family: "Roboto", helvetica, arial, sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  text-rendering: optimizeLegibility;
+.img-res {
+  background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url(https://images.unsplash.com/photo-1535320903710-d993d3d77d29?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover  !important;
+  // position: relative;
+  height: 100%;
 }
+
+.caption-res {
+  //  position: absolute;
+  left: 0;
+  padding:110px;
+  width: 100%;
+  text-align: center;
+  color: #000;
+}
+.caption-res span.border {
+  background-color: #111;
+  color: #fff;
+  padding: 18px;
+  font-size: 25px;
+  letter-spacing: 10px;
+}
+
+.intro-res{
+  padding-bottom: 30px;
+  color: #000000;
+  font-size: 20px;
+  margin-left: 60px;
+  margin-right: 60px;
+  text-align: justify;
+}
+
 
 div.table-title {
   display: block;
@@ -48,9 +72,9 @@ th {
   background:#1b1e24;
   border-bottom:4px solid #9ea7af;
   border-right: 1px solid #343a45;
-  font-size:23px;
+  font-size:20px;
   font-weight: 100;
-  padding:24px;
+  padding:10px 20px;
   text-align:left;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   vertical-align:middle;
@@ -106,8 +130,8 @@ tr:last-child td:last-child {
 
 td {
   background:#FFFFFF;
-  padding:5px;
-  text-align:left;
+  padding:2px;
+  text-align: center;
   vertical-align:middle;
   font-weight:300;
   font-size:18px;

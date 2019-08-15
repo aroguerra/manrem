@@ -1,43 +1,44 @@
-<h1>Results of Simulation <%=@simulation.id%> </h1>
-   <div class ="container">
-    <div class="btn-landing col-xs-12 col-sm-12 col-md-2">
+<div class="img-res">
+  <div class="caption-res">
+    <span class="border">Resultados Simulação</span>
+  </div>
+  <div class="intro-res" style="text-align: center">
+    <p>Na tabela apresentada tens os resultados da simulação e podes descarregar o excel de resultados</p>
+    <p><strong>Mercado:</strong> <%= @simulation.market_type.capitalize %></p>
+    <p><strong>Tipo:</strong> <%= @simulation.pricing_mechanism.capitalize  %> </p>
+    <div class="btn-landing-black" style="margin: auto">
       <%=link_to 'Download Xlsx', results_showbm_path(format: :xlsx)  %>
     </div>
-    <br>
-        <table>
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col">Agente</th>
-              <th scope="col">Period</th>
-              <th scope="col">Power</th>
-              <th scope="col">Down Traded</th>
-              <th scope="col">Power Down</th>
-              <th scope="col">Up Traded</th>
-              <th scope="col">Power Up</th>
-              <th scope="col">Price</th>
-              <th scope="col">Market Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @results.where(simulation_id: @simulation.id).each do |result| %>
-            <tr>
-              <th scope="row"></th>
-
-              <td><%= result.bm_unit_name %></td>
-              <td><%= result.period %></td>
-              <td><%= result.power %></td>
-              <td><%= result.down_traded %></td>
-              <td><%= result.power_down %></td>
-              <td><%= result.up_traded %></td>
-              <td><%= result.power_up %></td>
-              <td><%= result.price %></td>
-              <td><%= result.market_price %></td>
-
-
-            </tr>
-             <% end %>
-          </tbody>
-        </table>
-    </div>
+  </div>
+    <table style="margin: auto; margin-top: 60px; margin-bottom: 60px">
+      <thead>
+        <tr>
+          <th scope="col">Agente</th>
+          <th scope="col">Period</th>
+          <th scope="col">Power</th>
+          <th scope="col">Down Traded</th>
+          <th scope="col">Power Down</th>
+          <th scope="col">Up Traded</th>
+          <th scope="col">Power Up</th>
+          <th scope="col">Price</th>
+          <th scope="col">Market Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @results.where(simulation_id: @simulation.id).each do |result| %>
+          <tr>
+            <td><%= result.bm_unit_name %></td>
+            <td><%= result.period %></td>
+            <td><%= result.power %></td>
+            <td><%= result.down_traded %></td>
+            <td><%= result.power_down %></td>
+            <td><%= result.up_traded %></td>
+            <td><%= result.power_up %></td>
+            <td><%= result.price %></td>
+            <td><%= result.market_price %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+</div>
 
