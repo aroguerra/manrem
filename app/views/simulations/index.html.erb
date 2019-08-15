@@ -1,46 +1,50 @@
 <div class="img-sim">
-  <div>
-  <h1>Simulations</h1>
+  <div class="caption-sim">
+    <span class="border">Simulações</span>
+  </div>
+  <div class="intro-sim">
+     <p>Estás nas Simulações! Aqui tens a lista completa de todas as simulações que já fizeste no Matrem online, organizadas por data. Podes consultar os Resultados de cada simulação e apagar, caso já nao queiras (irreversível!!!) </p>
+  </div>
+  <div class="btn-landing-black" style="width: 280px; margin:auto">
+    <span>Número de simulações: <%= @simulations.count %></span>
+  </div>
+  <div    style= "margin-top: 10px;">
+    <% @simulations.each_with_index do |item, index|%>
+          <div class="card-product">
+            <%= image_tag "sim.png" %>
+            <div class="card-product-infos">
+              <h2>Simulação <%=index + 1%></h2>
+              <div class="sim-info">
+                <p><strong>Data da Simulação</strong></p>
+                <p>data: <%= item.date.strftime("%B %d")  %></p>
+              </div>
+              <div class="sim-info">
+                <p><strong>Tipo de Mercado</strong></p>
+                <p>Mercado: <%= item.market_type %></p>
+              </div>
+              <div class="sim-info">
+                <p><strong>Descrição</strong></p>
+                <p>Tipo de mercado: <%= item.pricing_mechanism %> </p>
+              </div>
+            </div>
+            <div>
+              <div class="btn-landing-black">
+              <% if item.market_type == "balance market" %>
+                <%= link_to "See Results", results_showbm_path(item.id)%>
+              <% end %>
+              <% if item.market_type == "pool market" %>
+                <%= link_to "See Results", results_show_path(item.id)%>
+              <% end %>
+            </div>
+            <div class="btn-landing-gray" style="border-radius: 5px; margin-top: 5px">
+              <%= link_to "Delete", simulation_path(item) , method: :delete, data: { confirm: "Are you sure?" }%>
+            </div>
+            </div>
+
+          </div>
+    <% end%>
+  </div>
 </div>
-<h3>Number of simulations <%= @simulations.count  %></h3>
-  <% @simulations.each_with_index do |item, index|%>
-    <div class=row>
-      <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="card-product">
-          <img src="https://img.icons8.com/nolan/96/000000/stocks.png">
-          <div class="card-product-infos">
-            <h2>Simulação <%=index + 1%></h2>
-            <div class="sim-info">
-              <p><strong>Data da Simulação</strong></p>
-              <p>data: <%= item.date.strftime("%B %d")  %></p>
-            </div>
-            <div class="sim-info">
-              <p><strong>Tipo de Mercado</strong></p>
-              <p>Mercado: <%= item.market_type %></p>
-            </div>
-            <div class="sim-info">
-              <p><strong>Descrição</strong></p>
-              <p>Tipo de mercado: <%= item.pricing_mechanism %> </p>
-            </div>
-            <div class="sim-info">
-              <p><strong>Agentes</strong></p>
-              <p><%=  %></p>
-            </div>
-          </div>
-          <div class="btn-landing-white">
-            <% if item.market_type == "balance market" %>
-              <%= link_to "See Results", results_showbm_path(item.id)%>
-            <% end %>
-            <% if item.market_type == "pool market" %>
-              <%= link_to "See Results", results_show_path(item.id)%>
-            <% end %>
-          </div>
-          <div class="btn-landing-gray">
-            <%= link_to "Delete", simulation_path(item) , method: :delete, data: { confirm: "Are you sure?" }%>
-          </div>
-        </div>
-      </div>
-    </div>
-  <% end%>
-</div>
+
+
 

@@ -3,27 +3,61 @@
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover  !important;
+  // position: relative;
+  height: 100%;
 }
+
+.caption-sim {
+  //  position: absolute;
+  left: 0;
+  padding:110px;
+  width: 100%;
+  text-align: center;
+  color: #000;
+}
+
+.caption-sim span.border {
+  background-color: #111;
+  color: #fff;
+  padding: 18px;
+  font-size: 25px;
+  letter-spacing: 10px;
+}
+
+.intro-sim{
+  padding-bottom: 30px;
+  color: #000000;
+  font-size: 20px;
+  margin-left: 60px;
+  margin-right: 60px;
+  text-align: justify;
+}
+
 .card-product {
   overflow: hidden;
   height: 120px;
-  background: white;
+  width: 100%;
+  background: #4b545e;
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
   display: flex;
   align-items: center;
   margin-bottom: 50px;
+  color:white;
+  padding:10px 60px;
+  justify-content: space-around;
 }
 
 .card-product img {
   height: 100%;
-  width: 120px;
-  object-fit: cover;
+  // width: 120px;
+  // object-fit: cover;
 }
 
 .card-product h2 {
   font-size: 16px;
   font-weight: bold;
-  margin: 0;
+  padding-top: 35px;
+  padding-right: 25px
 }
 
 .card-product p {
