@@ -142,4 +142,36 @@ class AgentsController < ApplicationController
       secondary_needs.save
     end
   end
+
+  def importdayahead
+    xlsx = Roo::Spreadsheet.open(params[:file])
+    BmSecondaryNeed.destroy_all
+
+    prices = xlsx.column(2).drop(1)
+
+    (1..24).each do |val|
+      secondary_needs = ********.new(
+        prevision: prices[val - 1],
+        period: val,
+        user_id: current_user.id
+      )
+      ********.save
+    end
+  end
+
+  def importterneed
+    xlsx = Roo::Spreadsheet.open(params[:file])
+    BmTerciaryNeed.destroy_all
+
+    previsions = xlsx.column(2).drop(1)
+
+    (1..24).each do |val|
+      secondary_needs = BmSecondaryNeed.new(
+        prevision: previsions[val - 1],
+        period: val,
+        user_id: current_user.id
+      )
+      secondary_needs.save
+    end
+  end
 end

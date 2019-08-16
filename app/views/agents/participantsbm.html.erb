@@ -1,16 +1,45 @@
-<h1>Participants</h1>
-<div class ="container">
+<div class="img-par">
+  <div class="caption-par">
+    <span class="border">Participantes</span>
+  </div>
+  <div class="intro-par" style="text-align: justify">
+    <p>Agora que carregaste o excel de input com os agentes, podes escolher os que queres que participem na simulação do Mercado de Reservas. Seleciona as unidades de produção carregando na checkbox, por default estão todas escolhidas. Após escolheres podes simular o Mercado de Reservas Secundário ou Terciário.</p>
+  </div>
   <form action="/bmsecondary" method="post">
-    <div class ="row">
-      <% @my_bm_units.each do |agent| %>
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" name="idb[<%= agent.id %>]" class="custom-control-input" id="<%= agent.id %>" checked>
-          <label class="custom-control-label" for="<%= agent.id %>"> <%=agent.name %></label>
-        </div>
-      <% end %>
+    <div style="text-align: center">
+      <input type="submit" value="Balance Market Sec" class="btn-landing-black">
+      <input type="submit" value="Balance Market Ter" class="btn-landing-black" formaction="#">
     </div>
-    <br>
-    <input type="submit" value="BM Secondary" class="btn-landing">
+    <div style="display: flex">
+      <table style="margin: auto; margin-top: 60px; margin-bottom: 60px">
+        <thead>
+          <tr>
+            <th scope="col">Agente</th>
+            <th scope="col">Unit</th>
+            <th scope="col">Fuel</th>
+            <th scope="col">Category</th>
+            <th scope="col">Participant</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @my_bm_units.each do |unit| %>
+            <tr>
+              <td><%= BmAgent.where(id: unit.bm_agent_id)[0].name %></td>
+              <td><%= unit.name %></td>
+              <td><%= unit.fuel %></td>
+              <td><%= unit.category %></td>
+              <td>
+                <div class="custom-control custom-checkbox">
+                   <input type="checkbox" name="idb[<%= unit.id %>]" class="custom-control-input" id="<%= unit.id %>" checked>
+                   <label class="custom-control-label" for="<%= unit.id %>"> </label>
+                 </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </form>
 </div>
+
 
