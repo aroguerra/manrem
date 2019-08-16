@@ -1,4 +1,5 @@
 class AgentsController < ApplicationController
+  skip_before_action :verify_authenticity_token
   def index
     @my_buyers = Agent.where(user_id: current_user.id, category: "Buyer")
     @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")

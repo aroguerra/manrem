@@ -11,12 +11,24 @@
     </div>
   </div>
 </div>
+      <form action="/import" method="post">
+      <input type="file" id="file" />
+      <label for="file" />choose a file</label>
+
+      </form>
+
       <%= form_tag import_path, multipart: true do   %>
       <%= file_field_tag :file   %>
+      <input type="submit" class="btn-landing-black">
+            <% end %>
+
+
+
       <%= submit_tag "Import"   %>
 
 
-    <% end %>
+
+
     <br>
     <%= form_tag importbm_path, multipart: true do   %>
     <%= file_field_tag :file   %>
@@ -45,4 +57,3 @@
              <% end %>
           </tbody>
         </table>
-    <

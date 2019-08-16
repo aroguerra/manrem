@@ -1,32 +1,67 @@
-<h1>Participants</h1>
-<div class ="container">
-  <form action="/asym" method="post">
-    <div class ="row">
-      <% @my_buyers.each do |buyer| %>
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" name="idb[<%= buyer.id %>]" class="custom-control-input" id="<%= buyer.id %>" checked>
-          <label class="custom-control-label" for="<%= buyer.id %>"> <%=buyer.name %></label>
-        </div>
-      <% end %>
+<div class="img-par">
+  <div class="caption-par">
+    <span class="border">Participants</span>
+  </div>
+  <div class="intro-par" style="text-align: justify">
+    <p>Agora que carregaste o excel de input com os agentes, podes escolher os que queres que participem na simulação do Mercado Diário. Seleciona carregando na checkbox, por default estão todos escolhidos. Após escolheres podes simular o Mercado Diário Symmetrical ou Assymetrical.</p>
+  </div>
+  <form action="/sym" method="post">
+    <div style="text-align: center">
+      <input type="submit" value="Pool Market Sym" class="btn-landing-black">
+      <input type="submit" value="Pool Market ASym" class="btn-landing-black" formaction="asym">
     </div>
-    <br>
-    <div class ="row">
-      <% @my_sellers.each do |seller| %>
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" name="ids[<%= seller.id %>]" class="custom-control-input" id="<%= seller.id %>" checked>
-          <label class="custom-control-label" for="<%= seller.id %>"> <%= seller.name %></label>
-        </div>
-      <% end %>
+    <div style="display: flex">
+      <table style="margin: auto; margin-top: 60px; margin-bottom: 60px">
+        <thead>
+          <tr>
+            <th scope="col">Agente</th>
+            <th scope="col">Type</th>
+            <th scope="col">Participant</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @my_buyers.each do |buyer| %>
+            <tr>
+              <td><%= buyer.name %></td>
+              <td><%= buyer.category %></td>
+              <td>
+                <div class="custom-control custom-checkbox">
+                   <input type="checkbox" name="idb[<%= buyer.id %>]" class="custom-control-input" id="<%= buyer.id %>" checked>
+                   <label class="custom-control-label" for="<%= buyer.id %>"> </label>
+                 </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <table style="margin: auto; margin-top: 60px; margin-bottom: 60px">
+        <thead>
+          <tr>
+            <th scope="col">Agente</th>
+            <th scope="col">Type</th>
+            <th scope="col">Participant</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @my_sellers.each do |seller| %>
+            <tr>
+              <td><%= seller.name %></td>
+              <td><%= seller.category %></td>
+              <td>
+                <div class="custom-control custom-checkbox">
+                   <input type="checkbox" name="ids[<%= seller.id %>]" class="custom-control-input" id="<%= seller.id %>" checked>
+                   <label class="custom-control-label" for="<%= seller.id %>"></label>
+                 </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
-    <input type="submit" value="Submit" class="btn-landing">
   </form>
-  <br>
-  <br>
-    <div class="btn-landing col-xs-12 col-sm-12 col-md-2">
-      <%=link_to 'Simulate Sym', sym_path  %>
-    </div>
-      <br>
-    <div class="btn-landing col-xs-12 col-sm-12 col-md-2">
-      <%=link_to 'Simulate ASym', asym_path  %>
-    </div>
 </div>
+
+
+
+
+
