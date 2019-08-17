@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_02_164251) do
+ActiveRecord::Schema.define(version: 2019_08_17_151350) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,45 @@ ActiveRecord::Schema.define(version: 2019_08_02_164251) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["simulation_id"], name: "index_bm_secondary_results_on_simulation_id"
+  end
+
+  create_table "bm_teciary_needs", force: :cascade do |t|
+    t.string "hour"
+    t.float "down_band"
+    t.float "up_band"
+    t.float "forecast"
+    t.float "observed_production"
+    t.float "portugal_consumption"
+    t.float "balance_imp_exp"
+    t.float "day_ahead_power_pt"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_bm_teciary_needs_on_user_id"
+  end
+
+  create_table "bm_terciary_day_ahead_prices", force: :cascade do |t|
+    t.integer "period"
+    t.float "price"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_bm_terciary_day_ahead_prices_on_user_id"
+  end
+
+  create_table "bm_terciary_needs", force: :cascade do |t|
+    t.float "down_band"
+    t.float "up_band"
+    t.float "forecast"
+    t.float "observed_production"
+    t.float "portugal_consumption"
+    t.float "balance_imp_exp"
+    t.float "day_ahead_power_pt"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "hour"
+    t.index ["user_id"], name: "index_bm_terciary_needs_on_user_id"
   end
 
   create_table "bm_unit_offers", force: :cascade do |t|
@@ -140,6 +179,9 @@ ActiveRecord::Schema.define(version: 2019_08_02_164251) do
   add_foreign_key "bm_agents", "users"
   add_foreign_key "bm_secondary_needs", "users"
   add_foreign_key "bm_secondary_results", "simulations"
+  add_foreign_key "bm_teciary_needs", "users"
+  add_foreign_key "bm_terciary_day_ahead_prices", "users"
+  add_foreign_key "bm_terciary_needs", "users"
   add_foreign_key "bm_unit_offers", "bm_units"
   add_foreign_key "bm_units", "bm_agents"
   add_foreign_key "offers", "agents"

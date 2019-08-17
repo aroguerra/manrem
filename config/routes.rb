@@ -25,5 +25,6 @@ Rails.application.routes.draw do
   post "import", to: "agents#import"
   post "importbm", to: "agents#importbm"
   post "importsecneed", to: "agents#importsecneed"
+  post "importtercneed", to: "agents#importtercneed"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

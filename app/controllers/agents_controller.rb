@@ -143,35 +143,39 @@ class AgentsController < ApplicationController
     end
   end
 
-  def importdayahead
+  def importtercneed
     xlsx = Roo::Spreadsheet.open(params[:file])
-    BmSecondaryNeed.destroy_all
+    BmTerciaryDayAheadPrice.destroy_all
+    BmTerciaryNeed.destroy_all
 
     prices = xlsx.column(2).drop(1)
 
     (1..24).each do |val|
-      secondary_needs = ********.new(
-        prevision: prices[val - 1],
+      bm_terciary_day_ahead_prices = BmTerciaryDayAheadPrice.new(
+        price: prices[val - 1].round(2),
         period: val,
         user_id: current_user.id
       )
-      ********.save
+      bm_terciary_day_ahead_prices.save
     end
-  end
 
-  def importterneed
-    xlsx = Roo::Spreadsheet.open(params[:file])
-    BmTerciaryNeed.destroy_all
+    xlsx.default_sheet = xlsx.sheets.second
 
-    previsions = xlsx.column(2).drop(1)
-
-    (1..24).each do |val|
-      secondary_needs = BmSecondaryNeed.new(
-        prevision: previsions[val - 1],
-        period: val,
+    (3..98).each do |val|
+      bm_terciary_needs = BmTerciaryNeed.new(
+        hour: ((val - 3) / 4).floor,
+        down_band: xlsx.row(val)[1],
+        up_band: xlsx.row(val)[2],
+        forecast: xlsx.row(val)[3],
+        observed_production: xlsx.row(val)[4],
+        portugal_consumption: xlsx.row(val)[5],
+        balance_imp_exp: xlsx.row(val)[6],
+        day_ahead_power_pt: xlsx.row(val)[7],
         user_id: current_user.id
       )
-      secondary_needs.save
+      bm_terciary_needs.save
     end
+    byebug
   end
 end
+
