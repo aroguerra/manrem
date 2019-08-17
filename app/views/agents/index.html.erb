@@ -1,30 +1,74 @@
-<div class="img-res">
+<div class="img-agent">
   <div class="caption-res">
     <span class="border">Agentes de Mercado</span>
   </div>
-  <div class="intro-res" style="text-align: center">
+  <div class="intro-res" style="text-align: justify;">
     <p>Neste separador podes carregar os agentes para os diversos tipos de mercado com o excel de input. Podes também carregar as necessidades para o mercado de reservas secundário e terciário</p>
-    <p><strong>Mercado:</strong></p>
-    <p><strong>Tipo:</strong></p>
-    <div class="btn-landing-black" style="margin: auto">
+  </div>
 
+ <div class="agent-submit" style=" display: flex; justify-content: space-between; align-items: center">
+    <div class="market-info">
+      <h5>Mercado Diário</h5>
+    </div>
+    <div>
+      <h5>Carregar Agentes</h5>
+      <form action="/import" method="post">
+      <input type="file" id="file" />
+      <label class="btn-landing-black" />Agentes PM</label>
+    </div>
+    <div>
+      <h5>Agentes Carregados</h5>
+      <p> Last Update: <%= @my_sellers.first.created_at.strftime("%B %d %H:%M:%S ") %> </p>
+    </div>
+  </div>
+  <div class="agent-submit" style=" display: flex; justify-content: space-between; align-items: center">
+    <div class="market-info">
+      <h5>Mercado Reservas</h5>
+    </div>
+    <div>
+      <h5>Carregar Agentes</h5>
+      <div style="margin-bottom: 2px">
+      <form action="/importbm" method="post">
+      <input type="file" id="file" />
+      <button type="submit" class="btn-landing-black">Agentes BM</button>
+      </div>
+      <div style="margin-bottom: 2px">
+      <form action="/importsecneed" method="post">
+      <input type="file" id="file" />
+      <label class="btn-landing-black" />Sec Needs</label>
+      </div>
+      <div style="margin-bottom: 2px">
+      <form action="/importtercneed" method="post">
+      <input type="file" id="file" />
+      <label class="btn-landing-black" />Ter Needs</label>
+      </div>
+    </div>
+    <div>
+      <h5>Agentes Carregados</h5>
+      <p> Last Update: <%= @my_sellers.first.created_at.strftime("%B %d %H:%M:%S ") %> </p>
+      <p> Sec Needs: <%= @my_sellers.count %> </p>
+      <p> Ter Needs: <%= @my_sellers.count %> </p>
     </div>
   </div>
 </div>
-      <form action="/import" method="post">
+
+
+
+
+
+
+
+      <!-- <form action="/import" method="post">
       <input type="file" id="file" />
-      <label for="file" />choose a file</label>
+      <label class="btn-landing-black" />choose a file</label>
 
       </form>
 
       <%= form_tag import_path, multipart: true do   %>
       <%= file_field_tag :file   %>
-      <input type="submit" class="btn-landing-black">
-            <% end %>
+      <input type="submit" >choose a file</input>
+      <% end %>
 
-
-
-      <%= submit_tag "Import"   %>
 
 
 
@@ -44,21 +88,5 @@
     <%= file_field_tag :file   %>
     <%= submit_tag "Importercneed"   %>
     <% end %>
-        <table>
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col">Name</th>
-              <th scope="col">Category</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @my_buyers.each do |buyer| %>
-            <tr>
-              <th scope="row"></th>
-              <td><%= buyer.name %></td>
-              <td><%= buyer.category %></td>
-            </tr>
-             <% end %>
-          </tbody>
-        </table>
+
+ -->
