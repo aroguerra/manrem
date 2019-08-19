@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get "simulation/:simulation_id/results", to: "results#show", as: 'results_show'
   get "simulation/:simulation_id/resultsbm", to: "results#showbm", as: 'results_showbm'
   post "bmsecondary", to: "simulations#bmsecondary"
+  post "bmterciary", to: "simulations#bmterciary"
 
   get "participants", to: "agents#participants"
   get "participantsbm", to: "agents#participantsbm"

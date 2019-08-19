@@ -613,7 +613,117 @@ class SimulationsController < ApplicationController
   end
 
   def bmterciary
+    units_participants = params[:idb].keys
+
+    bm_units = units_participants.map { |participant| BmUnit.where(id: participant.to_i) }#where participant equals true
+    bm_units.flatten!
+
+    simulation_sym = Simulation.new(
+      date: DateTime.now,
+      market_type: "balance market",
+      pricing_mechanism: "terciary",
+      user_id: current_user.id
+    )
+    simulation_sym.save
+
+    sorted_offers = BmUnitOffer.joins(:bm_unit)
+                               .select('bm_unit_offers.bm_unit_id,
+                                        bm_unit_offers.id,
+                                        bm_unit_offers.energy,
+                                        bm_unit_offers.energy_down,
+                                        bm_unit_offers.period,
+                                        bm_unit_offers.price')
+                               .order('bm_unit_offers.price ASC')
+
+    sorted_offers_aux = sorted_offers
+    reserve = sorted_offers
+
+    ag = 0
+    aux = sorted_offers.where(period: per + 1).first.price
+    row = []
+    offers = []
+    reserve = []
+
+
+    desvio = 0
+    needy = 0
+    needysec = 0
+
+    secondary_up = 0
+    secondary_down = 0
+    terciary_up = 0
+    terciary_down = 0
+
+    ter_needs_up = []
+    sec_needs_up = []
+    ter_needs_down = []
+    sec_needs_down = []
+
+    (0..23).each do |per|
+      hour_need = BmTerciaryNeed.where(hour: per, user_id: current_user.id)
+
+      secondary_up = 0
+      secondary_down = 0
+      terciary_up = 0
+      terciary_down = 0
+
+      hour_need.each do |need|
+        desvio = need.observed_production - need.forecast
+        needy = ((-(need.day_ahead_power_pt - (need.portugal_consumption + need.balance_imp_exp) + desvio)) / 4) * 0.9
+        needysec = ((-(need.day_ahead_power_pt - (need.portugal_consumption + need.balance_imp_exp) + desvio)) / 4) * 0.1
+
+        needy.positive? ? terciary_up += needy : terciary_down += needy
+        needysec.positive? ? secondary_up += needysec : secondary_down += needysec
+      end
+
+      ter_needs_up << terciary_up.round(2)
+      sec_needs_up << secondary_up.round(2)
+      ter_needs_down << terciary_down.round(2)
+      sec_needs_down << secondary_down.round(2)
+    end
+
+
+
+    sorted_offers.where(period: per + 1).each do |offer|
+      row = []
+      row << offer.bm_unit_id
+      row << offer.energy_down
+      row << offer.energy
+      row << offer.price
+      offers << row
+    end
+
+    sorted_offers.where(period: per + 1).each do |offer|
+      row = []
+      row << offer.bm_unit_id
+      row << offer.energy_down
+      row << offer.energy
+      row << offer.price
+      reserve << row
+    end
+
+
+
+
+
+
+
+
+
+
+
+
   end
+
+
+
+
+
+
+
+
+
+
 
   def destroy
     @simulation = Simulation.find(params[:id])

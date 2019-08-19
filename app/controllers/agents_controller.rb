@@ -144,7 +144,9 @@ class AgentsController < ApplicationController
   end
 
   def importtercneed
+
     xlsx = Roo::Spreadsheet.open(params[:file])
+
     BmTerciaryDayAheadPrice.destroy_all
     BmTerciaryNeed.destroy_all
 
@@ -175,7 +177,5 @@ class AgentsController < ApplicationController
       )
       bm_terciary_needs.save
     end
-    byebug
   end
 end
-

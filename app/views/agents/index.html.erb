@@ -1,4 +1,4 @@
-<div class="img-agent">
+<!-- <div class="img-agent">
   <div class="caption-res">
     <span class="border">Agentes de Mercado</span>
   </div>
@@ -50,11 +50,17 @@
       <p> Ter Needs: <%= @my_sellers.count %> </p>
     </div>
   </div>
-</div>
+</div> -->
 
 
-
-
+    <%= form_tag importtercneed_path, multipart: true do   %>
+    <%= file_field_tag :file   %>
+    <%= submit_tag "Importercneed"   %>
+    <% end %>
+    <%= form_tag importbm_path, multipart: true do   %>
+    <%= file_field_tag :file   %>
+    <%= submit_tag "Importbm"   %>
+    <% end %>
 
 
 
