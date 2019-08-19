@@ -682,8 +682,6 @@ class SimulationsController < ApplicationController
       sec_needs_down << secondary_down.round(2)
     end
 
-
-
     sorted_offers.where(period: per + 1).each do |offer|
       row = []
       row << offer.bm_unit_id
@@ -703,10 +701,72 @@ class SimulationsController < ApplicationController
     end
 
 
+    (0..23)
 
+      if system_needs_up[per] != 0 && system_needs_down[per] != 0 #needs up
+        catch :done do
+          (1..bm_units.count).each do |val1|
+            # byebug
+            (1..bm_units.count).each do |val2|
+              # byebug
+              if offers[val2 - 1][3] <= aux && energy < ter_needs_up
+                # byebug
+                aux = offers[val2 - 1][3]
+                ag = val2 - 1
+              elsif energy >= ter_needs_up
+                # byebug
+                throw :done
+              end
+            end
+            aux = 180
 
+            if energy + offers[ag][2] < ter_needs_up
+              energy += offers[ag][2]
+              hour_results << reserve[ag]
+              if energy < ter_needs_up
+                offers[ag][3] = 1000
+              end
+            else
+              offers[ag][3] = ter_needs_up - energy
+              hour_results << offers[ag]
+              throw :done
+            end
+          end
+        end
+      end
 
+        #guardar results
+      if system_needs_up[per] != 0 && system_needs_down[per] != 0 #needs down
+        catch :done do
+          (1..bm_units.count).each do |val1|
+            # byebug
+            (1..bm_units.count).each do |val2|
+              # byebug
+              if offers[val2 - 1][3] <= aux && energy < ter_needs_down
+                # byebug
+                aux = offers[val2 - 1][3]
+                ag = val2 - 1
+              elsif energy >= ter_needs_down
+                # byebug
+                throw :done
+              end
+            end
+            aux = 180
 
+            if energy + offers[ag][1] < ter_needs_down
+              energy += offers[ag][1]
+              hour_results << reserve[ag]
+              if energy < ter_needs_down
+                offers[ag][3] = 1000
+              end
+            else
+              offers[ag][3] = ter_needs_down - energy
+              hour_results << offers[ag]
+              throw :done
+            end
+          end
+        end
+      end
 
 
 
