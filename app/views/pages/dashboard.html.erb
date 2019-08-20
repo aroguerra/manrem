@@ -78,12 +78,12 @@
     <div>
       <h5>Simulações Realizadas</h5>
       <p> Secundário: <%= @my_simulations_bm_sec.count %></p>
-      <p> Terciário: <%= @my_simulations_pool_asym.count %> </p>
+      <p> Terciário: <%= @my_simulations_bm_ter.count %> </p>
     </div>
     <div>
       <h5>Agentes Carregados</h5>
-      <p> Buyers: <%= @my_buyers.count %> </p>
-      <p> Sellers: <%= @my_sellers.count %> </p>
+      <p> Agentes: <%= @my_bm_agents.count %> </p>
+      <p> Unidades: <%= @my_bm_units.count %> </p>
     </div>
     <div class="btn-landing-black">
         <%=link_to 'Sim Balance Market', participantsbm_path  %>

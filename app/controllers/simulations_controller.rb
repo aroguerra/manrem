@@ -435,6 +435,10 @@ class SimulationsController < ApplicationController
                                         bm_unit_offers.price')
                                .order('bm_unit_offers.price ASC')
 
+    # bm_units.each do |unit|
+    #   sorted_offers << sorted_offers_all.where(bm_unit_id: unit.id)
+    # end
+
     sorted_offers_aux = sorted_offers
     reserve = sorted_offers
 
@@ -615,8 +619,9 @@ class SimulationsController < ApplicationController
   def bmterciary
     units_participants = params[:idb].keys
 
-    bm_units = units_participants.map { |participant| BmUnit.where(id: participant.to_i) }#where participant equals true
-    bm_units.flatten!
+    #bm_units = units_participants.map { |participant| BmUnit.where(id: participant.to_i) }#where participant equals true
+    #bm_units_test = BmUnit.where(units_participants)
+    #bm_units.flatten!
 
     simulation_sym = Simulation.new(
       date: DateTime.now,
@@ -626,7 +631,7 @@ class SimulationsController < ApplicationController
     )
     simulation_sym.save
 
-    sorted_offers = BmUnitOffer.joins(:bm_unit)
+    offers_all = BmUnitOffer.joins(:bm_unit)
                                .select('bm_unit_offers.bm_unit_id,
                                         bm_unit_offers.id,
                                         bm_unit_offers.energy,
@@ -635,15 +640,13 @@ class SimulationsController < ApplicationController
                                         bm_unit_offers.price')
                                .order('bm_unit_offers.price ASC')
 
-    sorted_offers_aux = sorted_offers
+    sorted_offers = offers_all.where(bm_unit_id: units_participants)
+    byebug
+    # bm_units.each do |unit|
+    #   sorted_offers << BmUnitOffer.where(bm_unit_id: unit.id)
+    #   byebug
+    # end
     reserve = sorted_offers
-
-    ag = 0
-    aux = sorted_offers.where(period: per + 1).first.price
-    row = []
-    offers = []
-    reserve = []
-
 
     desvio = 0
     needy = 0
@@ -682,98 +685,104 @@ class SimulationsController < ApplicationController
       sec_needs_down << secondary_down.round(2)
     end
 
-    sorted_offers.where(period: per + 1).each do |offer|
+
+
+hour_results = []
+    ter_needs_up.each_with_index do |need, index|
+
+      byebug
+      ag = 0
+      energy = 0
+      aux = sorted_offers.where(period: index + 1).first.price
       row = []
-      row << offer.bm_unit_id
-      row << offer.energy_down
-      row << offer.energy
-      row << offer.price
-      offers << row
-    end
-
-    sorted_offers.where(period: per + 1).each do |offer|
-      row = []
-      row << offer.bm_unit_id
-      row << offer.energy_down
-      row << offer.energy
-      row << offer.price
-      reserve << row
-    end
+      offers = []
+      reserve = []
 
 
-    (0..23)
+      sorted_offers.each do |offer| #.where(period: index + 1)
+        row = []
+        row << offer.bm_unit_id
+        offer.energy.positive? ? row << offer.energy : row << 0
+        row << offer.price
+        offers << row
+      end
+      byebug
+      sorted_offers.where(period: index + 1).each do |offer|
+        row = []
+        row << offer.bm_unit_id
+        offer.energy.positive? ? row << offer.energy : row << 0
+        row << offer.price
+        reserve << row
+      end
 
-      if system_needs_up[per] != 0 && system_needs_down[per] != 0 #needs up
-        catch :done do
-          (1..bm_units.count).each do |val1|
-            # byebug
-            (1..bm_units.count).each do |val2|
-              # byebug
-              if offers[val2 - 1][3] <= aux && energy < ter_needs_up
-                # byebug
-                aux = offers[val2 - 1][3]
-                ag = val2 - 1
-              elsif energy >= ter_needs_up
-                # byebug
-                throw :done
-              end
-            end
-            aux = 180
-
-            if energy + offers[ag][2] < ter_needs_up
-              energy += offers[ag][2]
-              hour_results << reserve[ag]
-              if energy < ter_needs_up
-                offers[ag][3] = 1000
-              end
-            else
-              offers[ag][3] = ter_needs_up - energy
-              hour_results << offers[ag]
+         #needs up
+      catch :done do
+        (1..units_participants.count).each do |val1|
+           byebug
+          (1..units_participants.count).each do |val2|
+            byebug
+            if offers[val2 - 1][2] <= aux && energy < need
+              byebug
+              aux = offers[val2 - 1][2]
+              ag = val2 - 1
+            elsif energy >= need
+              byebug
               throw :done
             end
           end
+          aux = 180
+
+          if energy + offers[ag][1] < need
+            energy += offers[ag][1]
+            hour_results << reserve[ag]
+            if energy < need
+              offers[ag][2] = 1000
+            end
+          else
+            offers[ag][1] = need - energy
+            hour_results << offers[ag]
+            throw :done
+          end
         end
       end
+    end
+end
+
 
         #guardar results
-      if system_needs_up[per] != 0 && system_needs_down[per] != 0 #needs down
-        catch :done do
-          (1..bm_units.count).each do |val1|
-            # byebug
-            (1..bm_units.count).each do |val2|
-              # byebug
-              if offers[val2 - 1][3] <= aux && energy < ter_needs_down
-                # byebug
-                aux = offers[val2 - 1][3]
-                ag = val2 - 1
-              elsif energy >= ter_needs_down
-                # byebug
-                throw :done
-              end
-            end
-            aux = 180
+      #needs down
+      # ter_needs_down.each_with_index do |need, index|
+      #   catch :done do
+      #     (1..bm_units.count).each do |val1|
+      #       # byebug
+      #       (1..bm_units.count).each do |val2|
+      #         # byebug
+      #         if offers[val2 - 1][3] <= aux && energy < need
+      #           # byebug
+      #           aux = offers[val2 - 1][3]
+      #           ag = val2 - 1
+      #         elsif energy >= need
+      #           # byebug
+      #           throw :done
+      #         end
+      #       end
+      #       aux = 180
 
-            if energy + offers[ag][1] < ter_needs_down
-              energy += offers[ag][1]
-              hour_results << reserve[ag]
-              if energy < ter_needs_down
-                offers[ag][3] = 1000
-              end
-            else
-              offers[ag][3] = ter_needs_down - energy
-              hour_results << offers[ag]
-              throw :done
-            end
-          end
-        end
-      end
+      #       if energy + offers[ag][1] < ter_needs_down
+      #         energy += offers[ag][1]
+      #         hour_results << reserve[ag]
+      #         if energy < ter_needs_down
+      #           offers[ag][3] = 1000
+      #         end
+      #       else
+      #         offers[ag][3] = ter_needs_down - energy
+      #         hour_results << offers[ag]
+      #         throw :done
+      #       end
+      #     end
+      #   end
+      # end
 
-
-
-
-
-
-  end
 
 
 
