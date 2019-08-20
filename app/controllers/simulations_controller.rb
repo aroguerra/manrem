@@ -698,7 +698,7 @@ hour_results = []
       offers = []
       reserve = []
 
-
+      byebug
       sorted_offers.each do |offer| #.where(period: index + 1)
         row = []
         row << offer.bm_unit_id
