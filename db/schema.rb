@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_17_151350) do
+ActiveRecord::Schema.define(version: 2019_08_21_000405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +99,30 @@ ActiveRecord::Schema.define(version: 2019_08_17_151350) do
     t.index ["user_id"], name: "index_bm_terciary_needs_on_user_id"
   end
 
+  create_table "bm_terciary_results", force: :cascade do |t|
+    t.string "bm_agent_name"
+    t.string "bm_unit_name"
+    t.integer "period"
+    t.float "down_traded"
+    t.float "energy_down"
+    t.float "energy_down_price"
+    t.float "market_price_down"
+    t.float "up_traded"
+    t.float "energy_up"
+    t.float "energy_up_price"
+    t.float "market_price_up"
+    t.float "total_energy_down"
+    t.float "total_energy_up"
+    t.float "ter_need_down"
+    t.float "ter_need_up"
+    t.float "sec_need_down"
+    t.float "sec_need_up"
+    t.bigint "simulation_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["simulation_id"], name: "index_bm_terciary_results_on_simulation_id"
+  end
+
   create_table "bm_unit_offers", force: :cascade do |t|
     t.float "price"
     t.float "energy"
@@ -182,6 +206,7 @@ ActiveRecord::Schema.define(version: 2019_08_17_151350) do
   add_foreign_key "bm_teciary_needs", "users"
   add_foreign_key "bm_terciary_day_ahead_prices", "users"
   add_foreign_key "bm_terciary_needs", "users"
+  add_foreign_key "bm_terciary_results", "simulations"
   add_foreign_key "bm_unit_offers", "bm_units"
   add_foreign_key "bm_units", "bm_agents"
   add_foreign_key "offers", "agents"

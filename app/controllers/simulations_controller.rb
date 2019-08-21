@@ -641,7 +641,6 @@ class SimulationsController < ApplicationController
                                .order('bm_unit_offers.price ASC')
 
     sorted_offers = offers_all.where(bm_unit_id: units_participants)
-    byebug
     # bm_units.each do |unit|
     #   sorted_offers << BmUnitOffer.where(bm_unit_id: unit.id)
     #   byebug
@@ -687,10 +686,19 @@ class SimulationsController < ApplicationController
 
 
 
-hour_results = []
+
     ter_needs_up.each_with_index do |need, index|
 
-      byebug
+      if sec_needs_up[index] < up_band
+        res = sec_needs_up[index]
+      if sec_needs_up[index] = up_band
+        res = 0
+      if sec_needs_up[index] > up_band
+        res = up_band
+
+
+
+      hour_results = []
       ag = 0
       energy = 0
       aux = sorted_offers.where(period: index + 1).first.price
@@ -698,15 +706,14 @@ hour_results = []
       offers = []
       reserve = []
 
-      byebug
-      sorted_offers.each do |offer| #.where(period: index + 1)
+      sorted_offers.where(period: index + 1).each do |offer|
         row = []
         row << offer.bm_unit_id
         offer.energy.positive? ? row << offer.energy : row << 0
         row << offer.price
         offers << row
       end
-      byebug
+
       sorted_offers.where(period: index + 1).each do |offer|
         row = []
         row << offer.bm_unit_id
@@ -715,18 +722,19 @@ hour_results = []
         reserve << row
       end
 
+      #byebug
          #needs up
       catch :done do
         (1..units_participants.count).each do |val1|
-           byebug
+           #byebug
           (1..units_participants.count).each do |val2|
-            byebug
+            #byebug
             if offers[val2 - 1][2] <= aux && energy < need
-              byebug
+              #byebug
               aux = offers[val2 - 1][2]
               ag = val2 - 1
             elsif energy >= need
-              byebug
+              #byebug
               throw :done
             end
           end
@@ -744,9 +752,37 @@ hour_results = []
             throw :done
           end
         end
+         byebug
       end
+      byebug#results squi
     end
 end
+
+
+result = BmTerciaryResult.new(
+            bm_agent_name:
+            bm_unit_name:
+            period:
+            down_traded:
+            energy_down:
+            energy_down_price:
+            market_price_down:
+            up_traded:
+            energy_up:
+            energy_up_price:
+            market_price_up:
+            total_energy_down:
+            total_energy_down:
+            ter_needs_down:
+            ter_needs_up:
+            sec_needs_down:
+            sec_needs_up:
+            simulation_id: Simulation.last.id
+          )
+          result.save
+
+
+
 
 
         #guardar results
