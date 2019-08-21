@@ -29,8 +29,11 @@
             </div>
             <div>
               <div class="btn-landing-black">
-              <% if item.market_type == "balance market" %>
+              <% if item.market_type == "balance market" && item.pricing_mechanism =="secondary" %>
                 <%= link_to "See Results", results_showbm_path(item.id)%>
+              <% end %>
+              <% if item.market_type == "balance market" && item.pricing_mechanism =="terciary"%>
+                <%= link_to "See Results", results_showbmter_path(item.id)%>
               <% end %>
               <% if item.market_type == "pool market" %>
                 <%= link_to "See Results", results_show_path(item.id)%>

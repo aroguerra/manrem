@@ -26,4 +26,18 @@ class ResultsController < ApplicationController
       format.html { render :showbm }
     end
   end
+
+  def showbmter
+    @simulation = Simulation.find(params[:simulation_id])
+    @results = BmTerciaryResult.all
+
+    # respond_to do |format|
+    #   format.xlsx {
+    #     response.headers[
+    #       'Content-Disposition'
+    #     ] = "attachment; filename=items.xlsx"
+    #   }
+    #   format.html { render :showbm }
+    # end
+  end
 end
