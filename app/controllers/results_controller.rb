@@ -2,6 +2,7 @@ class ResultsController < ApplicationController
   def show
     @simulation = Simulation.find(params[:simulation_id])
     @results = Result.all
+    @a = @results.where(simulation_id: @simulation.id).sort_by {|result| [result.agent_name, result.period]}
 
     respond_to do |format|
       format.xlsx {
@@ -16,6 +17,7 @@ class ResultsController < ApplicationController
   def showbm
     @simulation = Simulation.find(params[:simulation_id])
     @results = BmSecondaryResult.all
+    @a = @results.where(simulation_id: @simulation.id).sort_by {|result| [result.bm_unit_name, result.period]}
 
     respond_to do |format|
       format.xlsx {

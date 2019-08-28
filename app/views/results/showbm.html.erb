@@ -25,7 +25,8 @@
         </tr>
       </thead>
       <tbody>
-        <% @results.where(simulation_id: @simulation.id).each do |result| %>
+       <% a = @results.where(simulation_id: @simulation.id).sort_by {|result| [result.bm_unit_name, result.period]} %>
+        <% a.each do |result| %>
           <tr>
             <td><%= result.bm_unit_name %></td>
             <td><%= result.period %></td>

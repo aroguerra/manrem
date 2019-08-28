@@ -53,18 +53,26 @@
 </div> -->
 
 
+    <%= form_tag importsecneed_path, multipart: true do   %>
+    <%= file_field_tag :file   %>
+    <%= submit_tag "Imporsecneed"   %>
+    <% end %>
+    <%= form_tag importbmsec_path, multipart: true do   %>
+    <%= file_field_tag :file   %>
+    <%= submit_tag "Importbmsec"   %>
+    <% end %>
+    <%= form_tag importbmter_path, multipart: true do   %>
+    <%= file_field_tag :file   %>
+    <%= submit_tag "Importbmter"   %>
+    <% end %>
+
     <%= form_tag importtercneed_path, multipart: true do   %>
     <%= file_field_tag :file   %>
     <%= submit_tag "Importercneed"   %>
     <% end %>
-    <%= form_tag importbm_path, multipart: true do   %>
-    <%= file_field_tag :file   %>
-    <%= submit_tag "Importbm"   %>
-    <% end %>
 
 
-
-      <!-- <form action="/import" method="post">
+     <!--  <form action="/import" method="post">
       <input type="file" id="file" />
       <label class="btn-landing-black" />choose a file</label>
 
@@ -74,25 +82,10 @@
       <%= file_field_tag :file   %>
       <input type="submit" >choose a file</input>
       <% end %>
-
-
-
-
-
-    <br>
-    <%= form_tag importbm_path, multipart: true do   %>
-    <%= file_field_tag :file   %>
-    <%= submit_tag "Importbm"   %>
-    <% end %>
-    <br>
-    <%= form_tag importsecneed_path, multipart: true do   %>
-    <%= file_field_tag :file   %>
-    <%= submit_tag "Imporsecneed"   %>
-    <% end %>
-     <br>
-    <%= form_tag importtercneed_path, multipart: true do   %>
-    <%= file_field_tag :file   %>
-    <%= submit_tag "Importercneed"   %>
-    <% end %>
-
  -->
+
+
+
+
+
+
