@@ -7,7 +7,7 @@
     <p><strong>Mercado:</strong> <%= @simulation.market_type.capitalize %></p>
     <p><strong>Tipo:</strong> <%= @simulation.pricing_mechanism.capitalize  %> </p>
     <div class="btn-landing-black" style="margin: auto">
-      <%=link_to 'Download Xlsx', results_showbm_path(format: :xlsx)  %>
+      <%=link_to 'Download Xlsx', results_showbmter_path(format: :xlsx)  %>
     </div>
   </div>
     <table style="margin: auto; margin-top: 60px; margin-bottom: 60px">
