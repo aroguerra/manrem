@@ -501,28 +501,29 @@ class SimulationsController < ApplicationController
             # byebug
             (1..bm_units.count).each do |val2|
               # byebug
-              if offers[val2 - 1][3] <= aux && (energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per])
+              if offers[val2 - 1][3] <= aux && (energy_down > 0.95 * system_needs_down[per] || energy_up < 0.95 * system_needs_up[per])
                 # byebug
                 aux = offers[val2 - 1][3]
                 ag = val2 - 1
-              elsif energy_down <= 0.9 * system_needs_down[per] && energy_up >= 0.9 * system_needs_up[per]
+              elsif energy_down <= 0.95 * system_needs_down[per] && energy_up >= 0.95 * system_needs_up[per]
                 # byebug
                 throw :done
               end
             end
             aux = 180
 
-            if energy_up + offers[ag][2] < 0.9 * system_needs_up[per] || energy_down + offers[ag][1] > 0.9 * system_needs_down[per]
+            if energy_up + offers[ag][2] < 0.95 * system_needs_up[per] || energy_down + offers[ag][1] > 0.95 * system_needs_down[per]
+
               energy_up += offers[ag][2]
               energy_down += offers[ag][1]
               # byebug
 
-              if energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per]
-                if (0.9 * system_needs_down[per] - energy_down) > 0 || (0.9 * system_needs_up[per] - energy_up) < 0
-                  if (0.9 * system_needs_down[per] - energy_down) > 0
+              if energy_down > 0.95 * system_needs_down[per] || energy_up < 0.95 * system_needs_up[per]
+                if (0.95 * system_needs_down[per] - energy_down) > 0 || (0.95 * system_needs_up[per] - energy_up) < 0
+                  if (0.95 * system_needs_down[per] - energy_down) > 0
                     down_exceed == 0 ? offers_aux[ag][1] = offers_aux[ag][1] - (system_needs_down[per] - energy_down) : offers_aux[ag][1] = 0
                   end
-                  if (0.9 * system_needs_up[per] - energy_up) < 0
+                  if (0.95 * system_needs_up[per] - energy_up) < 0
                     up_exceed == 0 ? offers_aux[ag][2] = offers_aux[ag][2] - (system_needs_up[per] - energy_up) : offers_aux[ag][2] = 0
                     up_exceed += 1
                   end
@@ -536,20 +537,30 @@ class SimulationsController < ApplicationController
                 offers[ag][3] = 1000
               end
             else
-              if (0.9 * system_needs_down[per] - energy_down) < 0
+              if (0.95 * system_needs_down[per] - energy_down) < 0
                 ####
-                # byebug
+                byebug
               else
                 offers[ag][1] = 0
               end
-              if (0.9 * system_needs_up[per] - energy_up) > 0
+              if (0.95 * system_needs_up[per] - energy_up) > 0
                 ###
                 # byebug
               else
                 offers[ag][2] = 0
               end
-              # byebug
-              hour_results << offers[ag]
+              byebug
+              if energy_down < 1.05 * system_needs_down[per] || energy_up > 1.05 * system_needs_up[per]
+                byebug
+                if ((((energy_up - offers[ag][2]) / system_needs_up[per]) - 1).abs - (((energy_down - offers[ag][1]) / system_needs_down[per]) - 1).abs) >= 0
+                  hour_results << offers[ag]
+                  byebug
+                end
+                throw :done
+              else
+                hour_results << offers[ag]
+              end
+
               # byebug
               throw :done
             end
@@ -667,8 +678,8 @@ class SimulationsController < ApplicationController
 
       hour_need.each do |need|
         desvio = need.observed_production - need.forecast
-        needy = ((-(need.day_ahead_power_pt - (need.portugal_consumption + need.balance_imp_exp) + desvio)) / 4) * 0.9
-        needysec = ((-(need.day_ahead_power_pt - (need.portugal_consumption + need.balance_imp_exp) + desvio)) / 4) * 0.1
+        needy = (((- need.day_ahead_power_pt + need.portugal_consumption - need.balance_imp_exp + desvio)) / 4) * 0.9
+        needysec = (((- need.day_ahead_power_pt + need.portugal_consumption - need.balance_imp_exp + desvio)) / 4) * 0.1
 
         needy.positive? ? terciary_up += needy : terciary_down += needy
         needysec.positive? ? secondary_up += needysec : secondary_down += needysec
