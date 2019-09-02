@@ -2,9 +2,9 @@ wb = xlsx_package.workbook
 
 wb.add_worksheet(name: "BM") do |sheet|
   # Create the header row
-  sheet.add_row ["Unit Name", "Period", "Down Traded[MWh]", "Power Down[MW]", "Power Down Price", "Market Price Down" , "UP Traded", "Power UP", "Power UP Price", "Market Price UP", "Terciary Needs up", "Terciary Needs down"]
+  sheet.add_row ["Unit Name", "Period", "Down Traded[MWh]", "Power Down[MW]", "Power Down Price", "Market Price Down" , "UP Traded", "Power UP", "Power UP Price", "Market Price UP", "Terciary Needs up", "Terciary Needs down", "total up", "total down"]
   # Create entries for each item
   @a.each do |item|
-    sheet.add_row [item.bm_unit_name, item.period, item.down_traded, item.energy_down, item.energy_down_price, item.market_price_down, item.up_traded, item.energy_up, item.energy_up_price, item.market_price_up, item.ter_need_up, item.ter_need_down ]
+    sheet.add_row [item.bm_unit_name, item.period, item.down_traded, item.energy_down, item.energy_down_price, item.market_price_down, item.up_traded, item.energy_up, item.energy_up_price, item.market_price_up, item.ter_need_up, item.ter_need_down, item.total_energy_up, item.total_energy_down]
   end
 end
