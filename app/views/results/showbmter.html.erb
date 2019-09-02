@@ -20,8 +20,7 @@
           <th scope="col">e_up_price</th>
           <th scope="col">m_price_up</th>
           <th scope="col">total_energy_up</th>
-          <th scope="col">Price</th>
-          <th scope="col">Market Price</th>
+          <th scope="col">ter need</th>
         </tr>
       </thead>
       <tbody>
@@ -30,18 +29,40 @@
           <tr>
             <td><%= result.bm_unit_name %></td>
             <td><%= result.period %></td>
-            <!-- <td><%= result.energy_down %></td>
-            <td><%= result.down_traded %></td>
-            <td><%= result.energy_down %></td>
-            <td><%= result.energy_down_price %></td>
-            <td><%= result.market_price_down %></td> -->
             <td><%= result.up_traded %></td>
             <td><%= result.energy_up %></td>
             <td><%= result.energy_up_price %></td>
             <td><%= result.market_price_up %></td>
             <td><%= result.total_energy_up %></td>
-            <td><%= result.total_energy_down %></td>
             <td><%= result.ter_need_up %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <table style="margin: auto; margin-top: 60px; margin-bottom: 60px">
+      <thead>
+        <tr>
+          <th scope="col">Agente</th>
+          <th scope="col">Period</th>
+          <th scope="col">down t</th>
+          <th scope="col">energy down</th>
+          <th scope="col">e_d_price</th>
+          <th scope="col">m_price_d</th>
+          <th scope="col">total_energy_up</th>
+          <th scope="col">ter need</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% a = @results.where(simulation_id: @simulation.id).sort_by {|result| [result.bm_unit_name, result.period]} %>
+        <% a.each do |result| %>
+          <tr>
+            <td><%= result.bm_unit_name %></td>
+            <td><%= result.period %></td>
+            <td><%= result.down_traded %></td>
+            <td><%= result.energy_down %></td>
+            <td><%= result.energy_down_price %></td>
+            <td><%= result.market_price_down %></td>
+            <td><%= result.total_energy_down %></td>
             <td><%= result.ter_need_down %></td>
           </tr>
         <% end %>

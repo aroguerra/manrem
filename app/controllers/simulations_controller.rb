@@ -803,10 +803,135 @@ class SimulationsController < ApplicationController
         )
         result.save
       end
-      #byebug
     end
+      ################################################
+
+      ter_needs_down.each_with_index do |need, index|
+
+        sec_down = 0
+        sec_down_result = 0
+        sec_down = sec_needs_down[index] - down_band[index]
+        sec_down >= 0 ? sec_down_result = sec_needs_down[index] : sec_down_result = down_band[index]
+
+        hour_results = []
+        ag = 0
+        energy = 0
+        aux = sorted_offers.where(period: index + 1).first.price
+        row = []
+        offers = []
+        reserve = []
+        down_sum = 0
+        total_down = 0
+
+        sorted_offers.where(period: index + 1).each do |offer|
+          row = []
+          row << offer.bm_unit_id
+          offer.energy.negative? ? row << offer.energy : row << 0
+          row << offer.price
+          offers << row
+        end
+
+        sorted_offers.where(period: index + 1).each do |offer|
+          row = []
+          row << offer.bm_unit_id
+          offer.energy.negative? ? row << offer.energy : row << 0
+          row << offer.price
+          reserve << row
+        end
+
+        #needs up
+        catch :done do
+          (1..units_participants.count).each do |val1|
+             #byebug
+            (1..units_participants.count).each do |val2|
+              #byebug
+              if offers[val2 - 1][2] <= aux && energy < -need
+                #byebug
+                aux = offers[val2 - 1][2]
+                ag = val2 - 1
+              elsif energy >= -need
+                #byebug
+                throw :done
+              end
+            end
+            aux = 180
+
+            if energy - offers[ag][1] < -need
+              energy += -offers[ag][1]
+              hour_results << reserve[ag]
+              if -energy < -need
+                offers[ag][2] = 1000
+              end
+            else
+              offers[ag][1] = -(-need - energy)
+              hour_results << offers[ag]
+              throw :done
+            end
+          end
+        end
+        #byebug #results squi
+        down_sum = hour_results.sum { |x| x[1] }
+        total_down = down_sum + sec_down_result #down_sum = hour_results.sum { |x| x[1] }
+
+        id_array = []
+        market_price = 0
+        hour_results.empty? ? market_price = 0 : market_price = hour_results.last[2]
+
+        hour_results.each do |array|
+          id_array << array[0]
+          result = BmTerciaryResult.new(
+            bm_agent_name: BmAgent.where(id: BmUnit.where(id: array[0])[0].bm_agent_id)[0].name,
+            bm_unit_name: BmUnit.where(id: array[0])[0].name,
+            period: index,
+            down_traded: array[1],
+            energy_down: down_sum,
+            energy_down_price: BmUnitOffer.where(bm_unit_id: array[0], period: index + 1)[0].price,
+            market_price_down: market_price,
+            up_traded: 0,
+            energy_up: 0,
+            energy_up_price: 0,
+            market_price_up: 0,
+            total_energy_down: total_down,
+            total_energy_up: 0,
+            ter_need_down: need,
+            ter_need_up: 0,
+            sec_need_down: sec_needs_down[index],
+            sec_need_up: 0,
+            simulation_id: Simulation.last.id
+          )
+          result.save
+        end
+
+        bm_units.each do |uni|
+          #byebug
+          next if id_array.include?(uni.id)
+          #byebug
+          result = BmTerciaryResult.new(
+            bm_agent_name: BmAgent.where(id: BmUnit.where(id: uni.id)[0].bm_agent_id)[0].name,
+            bm_unit_name: uni.name,
+            period: index,
+            down_traded: 0,
+            energy_down: 0,
+            energy_down_price: BmUnitOffer.where(bm_unit_id: uni.id, period: index + 1)[0].price,
+            market_price_down: market_price,
+            up_traded: 0,
+            energy_up: down_sum,
+            energy_up_price: 0,
+            market_price_up: 0,
+            total_energy_down: total_down,
+            total_energy_up: 0,
+            ter_need_down: need,
+            ter_need_up: 0,
+            sec_need_down: sec_needs_down[index],
+            sec_need_up: 0,
+            simulation_id: Simulation.last.id
+          )
+          result.save
+        end
+      end
+
     redirect_to simulations_path
-end
+  end
 
   def destroy
     @simulation = Simulation.find(params[:id])
@@ -815,3 +940,4 @@ end
     redirect_to simulations_path
   end
 end
+

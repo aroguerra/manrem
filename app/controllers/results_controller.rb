@@ -31,8 +31,10 @@ class ResultsController < ApplicationController
 
   def showbmter
     @simulation = Simulation.find(params[:simulation_id])
-    @results = BmTerciaryResult.all
-
+    @results = BmTerciaryResult.where(simulation_id: Simulation.find(params[:simulation_id]))
+    # @results.each do |result|
+    #   result.ter_need_up.positive? ? @up << result : @down << result
+    # end
     # respond_to do |format|
     #   format.xlsx {
     #     response.headers[
