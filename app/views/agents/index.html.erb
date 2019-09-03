@@ -55,6 +55,11 @@
     </div>
   </div>
 </div> -->
+  <%= form_tag import_path, multipart: true do   %>
+    <%= file_field_tag :file   %>
+    <%= submit_tag "ImportPool"   %>
+    <% end %>
+
 
 
     <%= form_tag importsecneed_path, multipart: true do   %>
