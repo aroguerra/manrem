@@ -501,67 +501,79 @@ class SimulationsController < ApplicationController
             # byebug
             (1..bm_units.count).each do |val2|
               # byebug
-              if offers[val2 - 1][3] <= aux && (energy_down > 0.99 * system_needs_down[per] || energy_up < 0.99 * system_needs_up[per])
+              if offers[val2 - 1][3] <= aux && (energy_down > 0.95 * system_needs_down[per] || energy_up < 0.95 * system_needs_up[per])
                 # byebug
                 aux = offers[val2 - 1][3]
                 ag = val2 - 1
-              elsif energy_down <= 0.99 * system_needs_down[per] && energy_up >= 0.99 * system_needs_up[per]
+              elsif energy_down <= 0.95 * system_needs_down[per] && energy_up >= 0.95 * system_needs_up[per]
                 # byebug
                 throw :done
               end
             end
             aux = 180
 
-            if energy_up + offers[ag][2] < 0.99 * system_needs_up[per] || energy_down + offers[ag][1] > 0.99 * system_needs_down[per]
+            if energy_up + offers[ag][2] < 0.95 * system_needs_up[per] || energy_down + offers[ag][1] > 0.95 * system_needs_down[per]
 
               energy_up += offers[ag][2]
               energy_down += offers[ag][1]
+              hour_results << reserve[ag]
+              offers[ag][3] = 1000
               # byebug
 
-              if energy_down > 0.99 * system_needs_down[per] || energy_up < 0.99 * system_needs_up[per]
-                if (0.99 * system_needs_down[per] - energy_down) > 0 || (0.99 * system_needs_up[per] - energy_up) < 0
-                  if (0.99 * system_needs_down[per] - energy_down) > 0
-                    down_exceed == 0 ? offers_aux[ag][1] = offers_aux[ag][1] - (system_needs_down[per] - energy_down) : offers_aux[ag][1] = 0
-                  end
-                  if (0.99 * system_needs_up[per] - energy_up) < 0
-                    up_exceed == 0 ? offers_aux[ag][2] = offers_aux[ag][2] - (system_needs_up[per] - energy_up) : offers_aux[ag][2] = 0
-                    up_exceed += 1
-                  end
-                  # byebug
-                  hour_results << offers_aux[ag]
-                else
-                  # byebug
-                  hour_results << reserve[ag]
-                end
-                # byebug
-                offers[ag][3] = 1000
-              end
+              # if energy_down > 0.9 * system_needs_down[per] || energy_up < 0.9 * system_needs_up[per]
+              #   if (0.9 * system_needs_down[per] - energy_down) > 0 || (0.9 * system_needs_up[per] - energy_up) < 0
+              #     if (0.9 * system_needs_down[per] - energy_down) > 0
+              #       down_exceed == 0 ? offers_aux[ag][1] = offers_aux[ag][1] - (system_needs_down[per] - energy_down) : offers_aux[ag][1] = 0
+              #     end
+              #     if (0.9 * system_needs_up[per] - energy_up) < 0
+              #       up_exceed == 0 ? offers_aux[ag][2] = offers_aux[ag][2] - (system_needs_up[per] - energy_up) : offers_aux[ag][2] = 0
+              #       up_exceed += 1
+              #     end
+              #     byebug
+              #     hour_results << offers_aux[ag]
+              #   else
+              #      byebug
+              #     hour_results << reserve[ag]
+              #   end
+              #   # byebug
+              #   offers[ag][3] = 1000
+              # end
             else
-              if (0.99 * system_needs_down[per] - energy_down) < 0
-                ####
-
+              if (0.95 * system_needs_down[per] - energy_down - offers[ag][1]) <= 0
+                if ag < offers.size - 1
+                  energy_down += offers[ag][1]
+                end
               else
-                offers[ag][1] = 0
+                if (0.95 * system_needs_down[per] - energy_down) >= 0
+                  offers[ag][1] = 0
+                end
               end
-              if (0.99 * system_needs_up[per] - energy_up) > 0
-                ###
-                # byebug
+              #byebug
+              if (0.95 * system_needs_up[per] - energy_up - offers[ag][2]) >= 0
+                if ag < offers.size - 1
+                  energy_up += offers[ag][2]
+                  hour_results << offers[ag]
+                  ag = ag + 1
+                end
               else
-                offers[ag][2] = 0
+                #byebug
+                if (0.95 * system_needs_up[per] - energy_up) <= 0
+                  offers[ag][2] = 0
+                end
               end
-
-              if (energy_down + offers[ag][1]) < 1.001 * system_needs_down[per] || (energy_up + offers[ag][2]) > 1.001 * system_needs_up[per]
+              #byebug
+              if (energy_down + offers[ag][1]) < 1.05 * system_needs_down[per] || (energy_up + offers[ag][2]) > 1.05 * system_needs_up[per]
                 offers[ag][2] = system_needs_up[per] - energy_up
                 offers[ag][1] = system_needs_down[per] - energy_down
 
                 if (((energy_up / system_needs_up[per]) - 1).abs - (((energy_down + offers[ag][1]) / system_needs_down[per]) - 1).abs) >= 0
                   hour_results << offers[ag]
+                  #byebug
                 end
                 throw :done
               else
                 hour_results << offers[ag]
               end
-
               # byebug
               throw :done
             end
@@ -572,7 +584,7 @@ class SimulationsController < ApplicationController
             puts "entrou #{per}2"
 
         end
-       # byebug
+        # byebug
         puts "entrou #{per}3"
         up_sum = hour_results.sum { |x| x[2] }
         down_sum = hour_results.sum { |x| x[1] }
