@@ -724,24 +724,26 @@ class SimulationsController < ApplicationController
 
       sorted_offers.where(period: index + 1).each do |offer|
         row = []
+        next if offer.energy <= 0
         row << offer.bm_unit_id
-        offer.energy.positive? ? row << offer.energy : row << 0
+        row << offer.energy
         row << offer.price
         offers << row
       end
 
       sorted_offers.where(period: index + 1).each do |offer|
         row = []
+        next if offer.energy <= 0
         row << offer.bm_unit_id
-        offer.energy.positive? ? row << offer.energy : row << 0
+        row << offer.energy
         row << offer.price
         reserve << row
       end
       #needs up
       catch :done do
-        (1..units_participants.count).each do |val1|
+        (1..offers.count).each do |val1|
            #byebug
-          (1..units_participants.count).each do |val2|
+          (1..offers.count).each do |val2|
             #byebug
             if offers[val2 - 1][2] <= aux && energy < need
               #byebug
@@ -786,7 +788,7 @@ class SimulationsController < ApplicationController
           energy_down_price: 0,
           market_price_down: 0,
           up_traded: array[1],
-          energy_up: up_sum,
+          energy_up: BmUnitOffer.where(bm_unit_id: array[0], period: index + 1)[0].energy,
           energy_up_price: BmUnitOffer.where(bm_unit_id: array[0], period: index + 1)[0].price,
           market_price_up: market_price,
           total_energy_down: 0,
@@ -804,27 +806,51 @@ class SimulationsController < ApplicationController
         #byebug
         next if id_array.include?(uni.id)
         #byebug
-        result = BmTerciaryResult.new(
-          bm_agent_name: BmAgent.where(id: BmUnit.where(id: uni.id)[0].bm_agent_id)[0].name,
-          bm_unit_name: uni.name,
-          period: index,
-          down_traded: 0,
-          energy_down: 0,
-          energy_down_price: 0,
-          market_price_down: 0,
-          up_traded: 0,
-          energy_up: up_sum,
-          energy_up_price: BmUnitOffer.where(bm_unit_id: uni.id, period: index + 1)[0].price,
-          market_price_up: market_price,
-          total_energy_down: 0,
-          total_energy_up: total_up,
-          ter_need_down: 0,
-          ter_need_up: need,
-          sec_need_down: 0,
-          sec_need_up: sec_needs_up[index],
-          simulation_id: Simulation.last.id
-        )
-        result.save
+        if BmUnitOffer.where(bm_unit_id: uni.id, period: index + 1)[0].energy > 0
+          result = BmTerciaryResult.new(
+            bm_agent_name: BmAgent.where(id: BmUnit.where(id: uni.id)[0].bm_agent_id)[0].name,
+            bm_unit_name: uni.name,
+            period: index,
+            down_traded: 0,
+            energy_down: 0,
+            energy_down_price: 0,
+            market_price_down: 0,
+            up_traded: 0,
+            energy_up: BmUnitOffer.where(bm_unit_id: uni.id, period: index + 1)[0].energy,
+            energy_up_price: BmUnitOffer.where(bm_unit_id: uni.id, period: index + 1)[0].price,
+            market_price_up: market_price,
+            total_energy_down: 0,
+            total_energy_up: total_up,
+            ter_need_down: 0,
+            ter_need_up: need,
+            sec_need_down: 0,
+            sec_need_up: sec_needs_up[index],
+            simulation_id: Simulation.last.id
+          )
+          result.save
+        else
+          result = BmTerciaryResult.new(
+            bm_agent_name: BmAgent.where(id: BmUnit.where(id: uni.id)[0].bm_agent_id)[0].name,
+            bm_unit_name: uni.name,
+            period: index,
+            down_traded: 0,
+            energy_down: BmUnitOffer.where(bm_unit_id: uni.id, period: index + 1)[0].energy,
+            energy_down_price: BmUnitOffer.where(bm_unit_id: uni.id, period: index + 1)[0].price,
+            market_price_down: 0,
+            up_traded: 0,
+            energy_up: 0,
+            energy_up_price: 0,
+            market_price_up: market_price,
+            total_energy_down: 0,
+            total_energy_up: total_up,
+            ter_need_down: 0,
+            ter_need_up: need,
+            sec_need_down: 0,
+            sec_need_up: sec_needs_up[index],
+            simulation_id: Simulation.last.id
+          )
+          result.save
+        end
       end
     end
       ################################################
@@ -848,27 +874,28 @@ class SimulationsController < ApplicationController
 
         sorted_offers.where(period: index + 1).each do |offer|
           row = []
+          next if offer.energy > 0
           row << offer.bm_unit_id
-          offer.energy.negative? ? row << offer.energy : row << 0
+          row << offer.energy
           row << offer.price
           offers << row
         end
 
         sorted_offers.where(period: index + 1).each do |offer|
           row = []
+          next if offer.energy > 0
           row << offer.bm_unit_id
-          offer.energy.negative? ? row << offer.energy : row << 0
+          row << offer.energy
           row << offer.price
           reserve << row
         end
         # offers.reverse!
         # reserve.reverse!
         #needs up
-        byebug
         catch :done do
-          (1..units_participants.count).each do |val1|
+          (1..offers.count).each do |val1|
              #byebug
-            (1..units_participants.count).each do |val2|
+            (1..offers.count).each do |val2|
               #byebug
               if offers[val2 - 1][2] >= aux && energy < -need
                 #byebug
@@ -880,7 +907,6 @@ class SimulationsController < ApplicationController
               end
             end
             aux = 0
-            byebug
             if energy - offers[ag][1] < -need
               energy += -offers[ag][1]
               hour_results << reserve[ag]
@@ -888,7 +914,6 @@ class SimulationsController < ApplicationController
                 offers[ag][2] = 0
               end
             else
-              byebug
               offers[ag][1] = -(-need - energy)
               hour_results << offers[ag]
               throw :done
@@ -896,7 +921,6 @@ class SimulationsController < ApplicationController
           end
         end
         #byebug #results squi
-        byebug
         down_sum = hour_results.sum { |x| x[1] }
         total_down = down_sum + sec_down_result #down_sum = hour_results.sum { |x| x[1] }
 
@@ -911,7 +935,7 @@ class SimulationsController < ApplicationController
             bm_unit_name: BmUnit.where(id: array[0])[0].name,
             period: index,
             down_traded: array[1],
-            energy_down: down_sum,
+            energy_down: BmUnitOffer.where(bm_unit_id: array[0], period: index + 1)[0].energy,
             energy_down_price: BmUnitOffer.where(bm_unit_id: array[0], period: index + 1)[0].price,
             market_price_down: market_price,
             up_traded: 0,
@@ -933,27 +957,51 @@ class SimulationsController < ApplicationController
           #byebug
           next if id_array.include?(uni.id)
           #byebug
-          result = BmTerciaryResult.new(
-            bm_agent_name: BmAgent.where(id: BmUnit.where(id: uni.id)[0].bm_agent_id)[0].name,
-            bm_unit_name: uni.name,
-            period: index,
-            down_traded: 0,
-            energy_down: 0,
-            energy_down_price: BmUnitOffer.where(bm_unit_id: uni.id, period: index + 1)[0].price,
-            market_price_down: market_price,
-            up_traded: 0,
-            energy_up: down_sum,
-            energy_up_price: 0,
-            market_price_up: 0,
-            total_energy_down: total_down,
-            total_energy_up: 0,
-            ter_need_down: need,
-            ter_need_up: 0,
-            sec_need_down: sec_needs_down[index],
-            sec_need_up: 0,
-            simulation_id: Simulation.last.id
-          )
-          result.save
+          if BmUnitOffer.where(bm_unit_id: uni.id, period: index + 1)[0].energy < 0
+            result = BmTerciaryResult.new(
+              bm_agent_name: BmAgent.where(id: BmUnit.where(id: uni.id)[0].bm_agent_id)[0].name,
+              bm_unit_name: uni.name,
+              period: index,
+              down_traded: 0,
+              energy_down: BmUnitOffer.where(bm_unit_id: uni.id, period: index + 1)[0].energy,
+              energy_down_price: BmUnitOffer.where(bm_unit_id: uni.id, period: index + 1)[0].price,
+              market_price_down: market_price,
+              up_traded: 0,
+              energy_up: 0,
+              energy_up_price: 0,
+              market_price_up: 0,
+              total_energy_down: total_down,
+              total_energy_up: 0,
+              ter_need_down: need,
+              ter_need_up: 0,
+              sec_need_down: sec_needs_down[index],
+              sec_need_up: 0,
+              simulation_id: Simulation.last.id
+            )
+            result.save
+          else
+             result = BmTerciaryResult.new(
+              bm_agent_name: BmAgent.where(id: BmUnit.where(id: uni.id)[0].bm_agent_id)[0].name,
+              bm_unit_name: uni.name,
+              period: index,
+              down_traded: 0,
+              energy_down: 0,
+              energy_down_price: 0,
+              market_price_down: market_price,
+              up_traded: 0,
+              energy_up: BmUnitOffer.where(bm_unit_id: uni.id, period: index + 1)[0].energy,
+              energy_up_price: BmUnitOffer.where(bm_unit_id: uni.id, period: index + 1)[0].price,
+              market_price_up: 0,
+              total_energy_down: total_down,
+              total_energy_up: 0,
+              ter_need_down: need,
+              ter_need_up: 0,
+              sec_need_down: sec_needs_down[index],
+              sec_need_up: 0,
+              simulation_id: Simulation.last.id
+            )
+            result.save
+          end
         end
       end
 
