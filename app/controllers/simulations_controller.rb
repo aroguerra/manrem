@@ -691,8 +691,8 @@ class SimulationsController < ApplicationController
 
       hour_need.each do |need|
         desvio = need.observed_production - need.forecast
-        needy = (((- need.day_ahead_power_pt + need.portugal_consumption - need.balance_imp_exp + desvio)) / 4) * 0.9
-        needysec = (((- need.day_ahead_power_pt + need.portugal_consumption - need.balance_imp_exp + desvio)) / 4) * 0.1
+        needy = (((- need.day_ahead_power_pt + need.portugal_consumption - need.balance_imp_exp + desvio)) / 4) * 1.0
+        needysec = (((- need.day_ahead_power_pt + need.portugal_consumption - need.balance_imp_exp + desvio)) / 4) * 0
 
         needy.positive? ? terciary_up += needy : terciary_down += needy
         needysec.positive? ? secondary_up += needysec : secondary_down += needysec
@@ -737,7 +737,6 @@ class SimulationsController < ApplicationController
         row << offer.price
         reserve << row
       end
-
       #needs up
       catch :done do
         (1..units_participants.count).each do |val1|
@@ -862,14 +861,16 @@ class SimulationsController < ApplicationController
           row << offer.price
           reserve << row
         end
-
+        # offers.reverse!
+        # reserve.reverse!
         #needs up
+        byebug
         catch :done do
           (1..units_participants.count).each do |val1|
              #byebug
             (1..units_participants.count).each do |val2|
               #byebug
-              if offers[val2 - 1][2] <= aux && energy < -need
+              if offers[val2 - 1][2] >= aux && energy < -need
                 #byebug
                 aux = offers[val2 - 1][2]
                 ag = val2 - 1
@@ -878,15 +879,16 @@ class SimulationsController < ApplicationController
                 throw :done
               end
             end
-            aux = 180
-
+            aux = 0
+            byebug
             if energy - offers[ag][1] < -need
               energy += -offers[ag][1]
               hour_results << reserve[ag]
               if -energy < -need
-                offers[ag][2] = 1000
+                offers[ag][2] = 0
               end
             else
+              byebug
               offers[ag][1] = -(-need - energy)
               hour_results << offers[ag]
               throw :done
@@ -894,6 +896,7 @@ class SimulationsController < ApplicationController
           end
         end
         #byebug #results squi
+        byebug
         down_sum = hour_results.sum { |x| x[1] }
         total_down = down_sum + sec_down_result #down_sum = hour_results.sum { |x| x[1] }
 
