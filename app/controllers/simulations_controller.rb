@@ -954,7 +954,7 @@ class SimulationsController < ApplicationController
         end
 
         bm_units.each do |uni|
-          #byebug
+          #byebug1
           next if id_array.include?(uni.id)
           #byebug
           if BmUnitOffer.where(bm_unit_id: uni.id, period: index + 1)[0].energy < 0
