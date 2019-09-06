@@ -7,7 +7,7 @@ class SimulationsController < ApplicationController
     @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
   end
 
-  def sym
+  def symm
 
     buyers_participants = params[:idb].keys
     sellers_participants = params[:ids].keys
@@ -46,6 +46,7 @@ class SimulationsController < ApplicationController
         bids << buyer.offers.where(period: per)
       end
       buyers_bids = bids.flatten.sort_by { |bid| bid.price }
+      buyers_bids.reverse!
 
       @my_sellers.each do |seller|
         offers << seller.offers.where(period: per)
@@ -110,7 +111,7 @@ class SimulationsController < ApplicationController
 
       #### inform buyers if bids were accepted or not
       power = total_power_sold
-      buyers_bids.reverse!
+      #buyers_bids.reverse!
 
       buyers_traded_power = []
       sellers_traded_power = []

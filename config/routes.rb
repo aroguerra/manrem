@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get 'dashboard', to: "pages#dashboard"
 
   get  "simulations", to: "simulations#index"
-  post  "sym", to: "simulations#sym"
+  post  "symm", to: "simulations#symm"
   post  "asym", to: "simulations#asym"
 
   resources :simulations, only: [:show, :destroy]

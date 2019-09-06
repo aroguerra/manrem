@@ -60,21 +60,6 @@ ActiveRecord::Schema.define(version: 2019_08_21_000405) do
     t.index ["simulation_id"], name: "index_bm_secondary_results_on_simulation_id"
   end
 
-  create_table "bm_teciary_needs", force: :cascade do |t|
-    t.string "hour"
-    t.float "down_band"
-    t.float "up_band"
-    t.float "forecast"
-    t.float "observed_production"
-    t.float "portugal_consumption"
-    t.float "balance_imp_exp"
-    t.float "day_ahead_power_pt"
-    t.bigint "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_bm_teciary_needs_on_user_id"
-  end
-
   create_table "bm_terciary_day_ahead_prices", force: :cascade do |t|
     t.integer "period"
     t.float "price"
@@ -203,7 +188,6 @@ ActiveRecord::Schema.define(version: 2019_08_21_000405) do
   add_foreign_key "bm_agents", "users"
   add_foreign_key "bm_secondary_needs", "users"
   add_foreign_key "bm_secondary_results", "simulations"
-  add_foreign_key "bm_teciary_needs", "users"
   add_foreign_key "bm_terciary_day_ahead_prices", "users"
   add_foreign_key "bm_terciary_needs", "users"
   add_foreign_key "bm_terciary_results", "simulations"
