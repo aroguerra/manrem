@@ -23,7 +23,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @my_bm_units.each do |unit| %>
+            <% @my_bm_units_sec.each do |unit| %>
               <tr>
                 <td><%= BmAgent.where(id: unit.bm_agent_id)[0].name %></td>
                 <td><%= unit.name %></td>
@@ -58,7 +58,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @my_bm_units.each do |unit| %>
+            <% @my_bm_units_ter.each do |unit| %>
               <tr>
                 <td><%= BmAgent.where(id: unit.bm_agent_id)[0].name %></td>
                 <td><%= unit.name %></td>

@@ -14,6 +14,11 @@ class AgentsController < ApplicationController
     @my_bm_agents = BmAgent.where(user_id: current_user.id)
     @my_bm_units = @my_bm_agents.map { |agent| agent.bm_units }
     @my_bm_units.flatten!
+    @my_bm_units_sec = []
+    @my_bm_units_ter = []
+    @my_bm_units.each do |unit|
+      unit.market == "secondary" ? @my_bm_units_sec << unit : @my_bm_units_ter << unit
+    end
   end
 
   def import
@@ -106,7 +111,41 @@ class AgentsController < ApplicationController
         name: unit_row[1],
         category: unit_row[2],
         fuel: unit_row[3],
-        bm_agent_id: BmAgent.where(name: unit_row[0])[0].id
+        bm_agent_id: BmAgent.where(name: unit_row[0])[0].id,
+        market: "secondary"
+      )
+      unit.save
+
+      energy_row = xlsx.row(counter + 1).compact.drop(1)
+      price_row = xlsx.row(counter).drop(5)
+
+      (1..24).each do |val|
+        offer = BmUnitOffer.new(
+          price: price_row[val - 1],
+          energy: energy_row[val - 1],
+          energy_down: energy_row[val - 1] * -0.5,
+          period: val,
+          bm_unit_id: BmUnit.last.id
+        )
+        offer.save
+      end
+      counter += 2
+    end
+
+    xlsx.default_sheet = xlsx.sheets.third
+
+    counter = 3
+    unit_list = xlsx.column(2).compact.drop(1)
+
+    unit_list.each do
+      unit_row = xlsx.row(counter)
+
+      unit = BmUnit.new(
+        name: unit_row[1],
+        category: unit_row[2],
+        fuel: unit_row[3],
+        bm_agent_id: BmAgent.where(name: unit_row[0])[0].id,
+        market: "terciary"
       )
       unit.save
 
@@ -155,7 +194,8 @@ class AgentsController < ApplicationController
         name: unit_row[1],
         category: unit_row[2],
         fuel: unit_row[3],
-        bm_agent_id: BmAgent.where(name: unit_row[0])[0].id
+        bm_agent_id: BmAgent.where(name: unit_row[0])[0].id,
+        market: "terciary"
       )
       unit.save
 
