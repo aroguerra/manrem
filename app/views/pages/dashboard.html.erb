@@ -83,7 +83,8 @@
     <div>
       <h5>Agentes Carregados</h5>
       <p> Agentes: <%= @my_bm_agents.count %> </p>
-      <p> Unidades: <%= @my_bm_units.count %> </p>
+      <p> Unidades Reserva Sec: <%= @my_bm_units_sec.count %> </p>
+      <p> Unidades Reserva Ter: <%= @my_bm_units_ter.count %> </p>
     </div>
     <div class="btn-landing-black">
         <%=link_to 'Sim Balance Market', participantsbm_path  %>
@@ -121,9 +122,7 @@
 
 
 
-  <div class="market" style="top: 70%;">
-    <p>Mercado reservas</p>
-  </div>
+
 </div>
 
 <!--

@@ -2,7 +2,7 @@ wb = xlsx_package.workbook
 
 wb.add_worksheet(name: "Items") do |sheet|
   # Create the header row
-  sheet.add_row ["agente", "Period", "Traded Power", "Price", "Market Price"]
+  sheet.add_row ["Agente", "Period", "Traded Power", "Price", Market Price"]
   # Create entries for each item
   @a.each do |item|
     sheet.add_row [item.agent_name, item.period, item.traded_power, item.price, item.market_price]

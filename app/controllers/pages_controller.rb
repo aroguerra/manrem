@@ -19,7 +19,8 @@ class PagesController < ApplicationController
     @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
 
     @my_bm_agents = BmAgent.where(user_id: current_user.id)
-    @my_bm_units = BmUnit.where(bm_agent_id: @my_bm_agents)
+    @my_bm_units_sec = BmUnit.where(bm_agent_id: @my_bm_agents, market: "secondary")
+    @my_bm_units_ter = BmUnit.where(bm_agent_id: @my_bm_agents, market: "terciary")
 
 
 
