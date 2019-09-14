@@ -5,7 +5,7 @@
     </span>
   </div>
   <div class="intro">
-    <p>Estás no Dashboard! Aqui podes consultar todos os teus registos no Matrem online.
+    <p>Estás no Dashboard! Aqui podes consultar todos os teus registos no SMEE-WEB.
     Podes verificar os agentes carregados e o número de simulações realizadas de cada tipo de mercado.
     Aqui dás inicio às simulações e podes obter mais informação sobre cada tipo de mercado: Mercado Diário, Mercado de Reservas Secundário e Terciário e Mercado de Futuros</p>
     <div class="inf">
@@ -33,7 +33,7 @@
   <div class = "row">
     <div class = "col-sm-6">
         <h3><strong>1. Carregar Agentes  &nbsp;<i class="fas fa-users"></i></strong></h3>
-        <p>Carrega os agentes com o excel de input, no separador "agents", para poderes dar inicio à simulação. Cada tipo de mercado tem um excel de input diferente</p>
+        <p>Carrega os agentes com o Excel de input, no separador "agentes", para poderes dar inicio à simulação. Cada tipo de mercado tem um excel de input diferente</p>
     </div>
     <div class = "col-sm-6">
       <h3><strong>2. Escolher Participantes &nbsp;<i class="fas fa-search"></i></strong></h3>
@@ -43,11 +43,11 @@
   <div class = "row">
     <div class = "col-sm-6">
       <h3><strong>3. Obter Resultados &nbsp;<i class="fas fa-chart-line"></i></strong></h3>
-      <p>Com a simulação concluida podes ir ao separador "Simulations" onde terás todas as simulações que realizaste organizadas por data. Nesse separador podes ver os resultados "See Results" ou apagar alguma simulação que aches desnecessaria</p>
+      <p>Com a simulação concluida podes ir ao separador "simulações" onde terás todas as simulações que realizaste organizadas por data. Nesse separador, podes ver os resultados "Ver Resultados" ou apagar alguma simulação que aches desnecessária</p>
      </div>
     <div class = "col-sm-6">
       <h3><strong>4. Baixar Excel &nbsp;<i class="fas fa-file-excel"></i></strong></h3>
-      <p>Terminada a simulação e conferidos os resultados podes fazer o download do excel dos Resultados</p>
+      <p>Terminada a simulação e conferidos os resultados, podes fazer o download do excel dos Resultados</p>
     </div>
   </div>
 </div>
@@ -59,8 +59,8 @@
     </div>
     <div>
       <h5>Simulações Realizadas</h5>
-      <p> Symmetrical: <%= @my_simulations_pool_sym.count%> </p>
-      <p> Asssymetrical: <%= @my_simulations_pool_asym.count %> </p>
+      <p> Simétrico: <%= @my_simulations_pool_sym.count%> </p>
+      <p> Assimétrico: <%= @my_simulations_pool_asym.count %> </p>
     </div>
     <div>
       <h5>Agentes Carregados</h5>
@@ -68,7 +68,7 @@
       <p> Sellers: <%= @my_sellers.count %> </p>
     </div>
     <div class="btn-landing-black" data-toggle="modal" data-target="#myModal">
-      <%= link_to 'Sim Pool Market', participants_path  %>
+      <%= link_to 'Sim Mer. Diário', participants_path  %>
     </div>
   </div>
   <div class="market" style="top: 40%; display: flex; justify-content: space-between; align-items: center">
@@ -87,7 +87,7 @@
       <p> Unidades Reserva Ter: <%= @my_bm_units_ter.count %> </p>
     </div>
     <div class="btn-landing-black">
-        <%=link_to 'Sim Balance Market', participantsbm_path  %>
+        <%=link_to 'Sim Mer. Reservas', participantsbm_path  %>
     </div>
   </div>
 

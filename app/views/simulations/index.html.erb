@@ -30,17 +30,17 @@
             <div>
               <div class="btn-landing-black">
               <% if item.market_type == "balance market" && item.pricing_mechanism =="secondary" %>
-                <%= link_to "See Results", results_showbm_path(item.id)%>
+                <%= link_to "Ver Resultados", results_showbm_path(item.id)%>
               <% end %>
               <% if item.market_type == "balance market" && item.pricing_mechanism =="terciary"%>
-                <%= link_to "See Results", results_showbmter_path(item.id)%>
+                <%= link_to "Ver Resultados", results_showbmter_path(item.id)%>
               <% end %>
               <% if item.market_type == "pool market" %>
-                <%= link_to "See Results", results_show_path(item.id)%>
+                <%= link_to "Ver Resultados", results_show_path(item.id)%>
               <% end %>
             </div>
             <div class="btn-landing-gray" style="border-radius: 5px; margin-top: 5px">
-              <%= link_to "Delete", simulation_path(item) , method: :delete, data: { confirm: "Are you sure?" }%>
+              <%= link_to "Apagar", simulation_path(item) , method: :delete, data: { confirm: "Are you sure?" }%>
             </div>
             </div>
 
