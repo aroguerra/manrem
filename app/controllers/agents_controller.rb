@@ -3,6 +3,9 @@ class AgentsController < ApplicationController
   def index
     @my_buyers = Agent.where(user_id: current_user.id, category: "Buyer")
     @my_sellers = Agent.where(user_id: current_user.id, category: "Seller")
+    @my_bm_agents = BmAgent.where(user_id: current_user.id)
+    @bm_sec_needs = BmSecondaryNeed.where(user_id: current_user.id)
+    @bm_ter_needs = BmTerciaryNeed.where(user_id: current_user.id)
   end
 
   def participants
