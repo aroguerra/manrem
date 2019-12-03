@@ -1,5 +1,5 @@
 
-
+<!--
   <%= form_tag import_path, multipart: true do   %>
     <%= file_field_tag :file   %>
     <%= submit_tag "ImportPool"   %>
@@ -35,11 +35,115 @@
       <%= form_tag import_path, multipart: true do   %>
       <%= file_field_tag :file   %>
       <input type="submit" >choose a file</input>
+      <% end %> -->
+
+
+
+<div class="img-agent">
+  <div class="caption-res">
+    <span class="border">Agentes de Mercado</span>
+  </div>
+  <div class="intro-res" style="text-align: justify;">
+    <p>Neste separador podes carregar os agentes para os diversos tipos de mercado com o Excel de input. Podes também carregar as necessidades para o mercado de reservas secundário e terciário</p>
+  </div>
+
+ <div class="agent-submit" style=" display: flex; justify-content: space-between; align-items: center">
+    <div class="market-info">
+      <h5>Mercado Diário</h5>
+    </div>
+    <div>
+      <h5>Carregar Agentes</h5>
+      <%= form_tag import_path, multipart: true do   %>
+      <%= file_field_tag :file   %>
+      <%= submit_tag "Agentes M. Diário"   %>
       <% end %>
- -->
+      <!-- <form action="/import" method="post">
+      <input type="file" id="file" />
+      <label class="btn-landing-black" />Agentes M. Diário</label>
+      </form> -->
+    </div>
+    <div>
+      <h5>Agentes Carregados</h5>
+      <p> Last Update: </p>
+      <% if @my_sellers.empty? %>
+        <p>no agents uploaded</p>
+      <% else %>
+        <p><%=@my_sellers.first.created_at.strftime("%B %d %H:%M:%S ")  %></p>
+      <% end %>
+    </div>
+  </div>
+  <div class="agent-submit" style=" display: flex; justify-content: space-between; align-items: center">
+    <div class="market-info">
+      <h5>Mercado Reservas</h5>
+    </div>
+    <div>
+      <h5>Carregar Agentes</h5>
+      <div style="margin-bottom: 2px">
+      <%= form_tag importbmsec_path, multipart: true do   %>
+      <%= file_field_tag :file   %>
+      <%= submit_tag "Agentes M. Reservas"  %>
+      <% end %>
+      <!-- <form action="/importbmsec" method="post">
+      <input type="file" id="file" />
+      <button type="submit" class="btn-landing-black">Agentes M. Reservas</button>
+      </form> -->
+      </div>
+    </div>
+    <div>
+      <h5>Agentes Carregados</h5>
+      <p> Last Update: </p>
+      <% if @my_bm_agents.empty? %>
+        <p>no agents uploaded</p>
+      <% else %>
+        <p><%=@my_bm_agents.first.created_at.strftime("%B %d %H:%M:%S ")  %></p>
+      <% end %>
+    </div>
+  </div>
+  <div class="agent-submit" style=" display: flex; justify-content: space-between; align-items: center">
+    <div class="market-info">
+      <h5>Mercado Reservas</h5>
+    </div>
+    <div>
+      <h5>Carregar Necessidades</h5>
+      <div style="margin-bottom: 2px">
+      <%= form_tag importsecneed_path, multipart: true do   %>
+      <%= file_field_tag :file   %>
+      <%= submit_tag "Necessidades Sec."   %>
+      <% end %>
+      <!-- <form action="/importsecneed" method="post">
+      <input type="file" id="file" />
+      <label class="btn-landing-black" />Necessidades Sec.</label>
+      </form> -->
+      </div>
+      <div style="margin-bottom: 2px">
+      <%= form_tag importtercneed_path, multipart: true do   %>
+      <%= file_field_tag :file   %>
+      <%= submit_tag "Necessidades Ter."   %>
+      <% end %>
+<!--       <form action="/importtercneed" method="post">
+      <input type="file" id="file" />
+      <label class="btn-landing-black" />Necessidades Ter.</label>
+      </form> -->
+      </div>
+    </div>
+    <div>
+      <h5>Necessidades Carregadas</h5>
+      <p> Sec Last Update:
+      <% if @bm_sec_needs.empty? %>
+        no needs uploaded</p>
+      <% else %>
+        <p><%=@bm_sec_needs.first.created_at.strftime("%B %d %H:%M:%S ")  %></p>
+      <% end %>
+      <p> Ter Last Update:
+      <% if @bm_ter_needs.empty? %>
+      no needs uploaded </p>
+      <% else %>
+        <p><%=@bm_ter_needs.first.created_at.strftime("%B %d %H:%M:%S ")  %></p>
+      <% end %>
 
-
-
+    </div>
+  </div>
+</div>
 
 
 
